@@ -1,14 +1,14 @@
 {
   "profile": {
-    "name": "이인직",
-    "role": "Service / Enterprise(In-house) Security Engineer",
+    "name": "",
+    "role": "",
     "headline": "",
     "subhead": "",
     "photo": "assets/img/profile/me.jpg",
     "photoFallback": "assets/img/profile/placeholder.svg"
   },
   "about": {
-    "name": "이인직",
+    "name": "",
     "birth": "",
     "address": "",
     "email": "",
@@ -18,7 +18,6 @@
   },
   "changelog": [
     {
-      "id": "entry-sample",
       "date": "",
       "title": "",
       "org": "",
@@ -29,17 +28,11 @@
   ],
   "aiSkills": [
     {
-      "id": "fspm-tool",
       "title": "FortiGate 정책 자동화 도구",
-      "summary": "방화벽 정책 객체 생성부터 보안 점검, 변경 이력 추적까지 반복 업무를 자동화한 내부 도구입니다.",
+      "summary": "",
       "description": "",
-      "modules": [
-        "대시보드 / 정책 조회 / 구조 연계 분석",
-        "정책 / 객체 생성",
-        "보안 점검 / 정책 정리 및 최적화",
-        "변경 이력 / 신청 및 조치관리 / 감사기록 / 환경설정"
-      ],
-      "tags": ["FortiGate", "정책 자동화", "보안 점검"],
+      "modules": [],
+      "tags": [],
       "images": []
     }
   ]
