@@ -23,35 +23,22 @@
       "org": "",
       "summary": "",
       "tags": [],
-      "images": []
+      "sections": [
+        {
+          "title": "",
+          "images": []
+        }
+      ]
     }
   ],
   "aiSkills": [
     {
-      "title": "FPMS (방화벽 정책 관리 시스템)",
-      "summary": "정책 조회 / 삽입 / 제거 / 최적화",
+      "title": "FortiGate 정책 자동화 도구",
+      "summary": "",
       "description": "",
-      "modules": [
-        "ㅁㄴㅇㅁㄴㅇ",
-        "ㅁㄴㅇㅁㄴㅇ"
-      ],
+      "modules": [],
       "tags": [],
-      "images": [
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-2.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-0.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-1.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-3.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-4.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-7.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-8.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-5.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-9.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-6.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-12.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-11.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-10.png",
-        "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/mwt0r5uz-13.png"
-      ]
+      "sections": []
     }
   ]
 }
