@@ -2,7 +2,7 @@
   "use strict";
 
   var SETTINGS_KEY = "portfolio_admin_settings_v1";
-  var CONTENT_PATH = "content/content.json";
+  var CONTENT_PATH = "public/content/content.json";
 
   var state = {
     profile: { name: "", role: "", headline: "", subhead: "", photo: "assets/img/profile/me.jpg", photoFallback: "assets/img/profile/placeholder.svg" },
@@ -414,7 +414,7 @@
         var filePath = "assets/img/" + baseDir + "/" + slug + "/" + Date.now().toString(36) + "-" + i + "." + extOf(p.file.name);
         imageChecks.push(
           fileToBase64(p.file).then(function (b64) {
-            actions.push({ filePath: filePath, base64: b64 });
+            actions.push({ filePath: "public/" + filePath, base64: b64 });
             entry.images = entry.images || [];
             entry.images.push(filePath);
           })
@@ -431,7 +431,7 @@
       profilePhotoPromise = fileToBase64(pendingProfilePhoto).then(function (b64) {
         var filePath = "assets/img/profile/me." + extOf(pendingProfilePhoto.name);
         state.profile.photo = filePath;
-        actions.push({ filePath: filePath, base64: b64 });
+        actions.push({ filePath: "public/" + filePath, base64: b64 });
       });
     }
 
