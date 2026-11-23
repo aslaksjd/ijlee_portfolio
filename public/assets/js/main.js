@@ -95,21 +95,34 @@
       return;
     }
 
-    entries.forEach(function (entry) {
-      var li = el("li", { class: "changelog-entry" });
+    entries.forEach(function (entry, idx) {
+      var li = el("li", { class: "changelog-entry reveal" });
+      li.style.setProperty("--i", idx);
+
+      var head = el("button", { class: "changelog-head", type: "button", "aria-expanded": "false" });
+      var headLeft = el("div");
 
       var meta = el("div", { class: "changelog-meta" });
       if (hasText(entry.date)) meta.appendChild(text("span", "changelog-date", entry.date));
       if (hasText(entry.org)) meta.appendChild(text("span", "changelog-org", entry.org));
-      li.appendChild(meta);
+      headLeft.appendChild(meta);
 
-      if (hasText(entry.title)) li.appendChild(text("h3", "changelog-title", entry.title));
-      if (hasText(entry.summary)) li.appendChild(text("p", "changelog-summary", entry.summary));
+      if (hasText(entry.title)) headLeft.appendChild(text("h3", "changelog-title", entry.title));
+
+      var toggle = text("span", "changelog-toggle", "펼치기");
+
+      head.appendChild(headLeft);
+      head.appendChild(toggle);
+      li.appendChild(head);
+
+      var body = el("div", { class: "changelog-body" });
+
+      if (hasText(entry.summary)) body.appendChild(text("p", "changelog-summary", entry.summary));
 
       if (entry.tags && entry.tags.length) {
         var tagWrap = el("div", { class: "changelog-tags" });
         entry.tags.forEach(function (t) { tagWrap.appendChild(text("span", "tag", t)); });
-        li.appendChild(tagWrap);
+        body.appendChild(tagWrap);
       }
 
       if (entry.images && entry.images.length) {
@@ -117,8 +130,18 @@
         entry.images.forEach(function (src) {
           imgWrap.appendChild(el("img", { src: src, alt: entry.title || "프로젝트 화면", loading: "lazy" }));
         });
-        li.appendChild(imgWrap);
+        body.appendChild(imgWrap);
       }
+
+      li.appendChild(body);
+
+      head.addEventListener("click", function () {
+        var open = !li.classList.contains("open");
+        li.classList.toggle("open", open);
+        head.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.textContent = open ? "접기" : "펼치기";
+        body.style.maxHeight = open ? body.scrollHeight + "px" : "0px";
+      });
 
       list.appendChild(li);
     });
@@ -137,8 +160,9 @@
     }
 
     skills.forEach(function (skill, idx) {
-      var panel = el("div", { class: "skill-panel" + (idx === 0 ? " open" : "") });
-      var btn = el("button", { class: "skill-head", type: "button", "aria-expanded": idx === 0 ? "true" : "false" });
+      var panel = el("div", { class: "skill-panel reveal" });
+      panel.style.setProperty("--i", idx);
+      var btn = el("button", { class: "skill-head", type: "button", "aria-expanded": "false" });
 
       var left = el("div");
       left.appendChild(text("h3", "skill-title", skill.title));
@@ -211,12 +235,31 @@
     }
   }
 
+  function initReveal() {
+    var items = document.querySelectorAll(".reveal");
+    if (!items.length) return;
+    if (!("IntersectionObserver" in window)) {
+      items.forEach(function (n) { n.classList.add("in-view"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("in-view");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    items.forEach(function (n) { io.observe(n); });
+  }
+
   function render(data) {
     renderProfile(data.profile);
     renderAbout(data.about);
     renderChangelog(data.changelog);
     renderSkills(data.aiSkills);
     renderFooter(data.about);
+    initReveal();
   }
 
   function initTabs() {
@@ -231,9 +274,12 @@
       for (var j = 0; j < links.length; j++) {
         links[j].classList.toggle("is-active", links[j].getAttribute("href") === "#" + id);
       }
-      // skill panels measure scrollHeight on render; re-measure open ones now
-      // that this block is no longer display:none (hidden blocks measure 0).
-      var openBodies = document.querySelectorAll("#" + id + " .skill-panel.open .skill-body");
+      // skill/changelog panels measure scrollHeight on render; re-measure open
+      // ones now that this block is no longer display:none (hidden blocks
+      // measure 0).
+      var openBodies = document.querySelectorAll(
+        "#" + id + " .skill-panel.open .skill-body, #" + id + " .changelog-entry.open .changelog-body"
+      );
       for (var m = 0; m < openBodies.length; m++) {
         openBodies[m].style.maxHeight = openBodies[m].scrollHeight + "px";
       }
