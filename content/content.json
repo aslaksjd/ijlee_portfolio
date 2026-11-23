@@ -1,0 +1,39 @@
+{
+  "profile": {
+    "name": "",
+    "role": "",
+    "headline": "",
+    "subhead": "",
+    "photo": "assets/img/profile/me.jpg",
+    "photoFallback": "assets/img/profile/placeholder.svg"
+  },
+  "about": {
+    "name": "",
+    "birth": "",
+    "address": "",
+    "email": "",
+    "education": "",
+    "company": "",
+    "bio": ""
+  },
+  "changelog": [
+    {
+      "date": "",
+      "title": "",
+      "org": "",
+      "summary": "",
+      "tags": [],
+      "images": []
+    }
+  ],
+  "aiSkills": [
+    {
+      "title": "FortiGate 정책 자동화 도구",
+      "summary": "",
+      "description": "",
+      "modules": [],
+      "tags": [],
+      "images": []
+    }
+  ]
+}
