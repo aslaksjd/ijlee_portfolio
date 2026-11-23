@@ -80,8 +80,8 @@ a { color: inherit; }
   from { opacity: 0; transform: translateY(10px); }
 }
 .hero-photo img {
-  width: 132px;
-  height: 132px;
+  width: 264px;
+  height: 264px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--signal);
@@ -105,6 +105,8 @@ a { color: inherit; }
   color: var(--signal);
 }
 .hero-headline, .hero-subhead { display: none; }
+
+body:not(.is-about) .hero-photo { display: none; }
 
 /* ============================================================
    Main nav — full-width bar under the header divider

@@ -224,6 +224,7 @@
     var blocks = document.querySelectorAll(".block");
 
     function activate(id) {
+      document.body.classList.toggle("is-about", id === "about");
       for (var i = 0; i < blocks.length; i++) {
         blocks[i].classList.toggle("is-hidden", blocks[i].id !== id);
       }
