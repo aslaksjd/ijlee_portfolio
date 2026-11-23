@@ -222,11 +222,11 @@
   function initTabs() {
     var links = document.querySelectorAll(".main-nav a");
     var blocks = document.querySelectorAll(".block");
+    var animating = false;
 
-    function activate(id) {
-      document.body.classList.toggle("is-about", id === "about");
+    function showBlock(next, id) {
       for (var i = 0; i < blocks.length; i++) {
-        blocks[i].classList.toggle("is-hidden", blocks[i].id !== id);
+        blocks[i].classList.toggle("is-hidden", blocks[i] !== next);
       }
       for (var j = 0; j < links.length; j++) {
         links[j].classList.toggle("is-active", links[j].getAttribute("href") === "#" + id);
@@ -239,18 +239,44 @@
       }
     }
 
+    function activate(id, animate) {
+      if (animating) return;
+      document.body.classList.toggle("is-about", id === "about");
+      var next = document.getElementById(id);
+      var current = document.querySelector(".block:not(.is-hidden)");
+
+      if (!animate || !current || current === next) {
+        showBlock(next, id);
+        return;
+      }
+
+      animating = true;
+      current.classList.add("is-folding-close");
+      current.addEventListener("animationend", function onCloseEnd() {
+        current.removeEventListener("animationend", onCloseEnd);
+        current.classList.remove("is-folding-close");
+        showBlock(next, id);
+        next.classList.add("is-folding-open");
+        next.addEventListener("animationend", function onOpenEnd() {
+          next.removeEventListener("animationend", onOpenEnd);
+          next.classList.remove("is-folding-open");
+          animating = false;
+        });
+      });
+    }
+
     for (var k = 0; k < links.length; k++) {
       links[k].addEventListener("click", function (e) {
         e.preventDefault();
         var id = this.getAttribute("href").slice(1);
-        activate(id);
+        activate(id, true);
         history.replaceState(null, "", "#" + id);
       });
     }
 
     var initial = (location.hash || "#about").slice(1);
     if (!document.getElementById(initial)) initial = "about";
-    activate(initial);
+    activate(initial, false);
   }
 
   initTabs();
