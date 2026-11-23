@@ -8,6 +8,15 @@
         "value": "space grotesk",
         "createdAt": "2026-11-20T08:45:33.424Z",
         "reason": "pre-existing design decision (predates this session): Space Grotesk is used only for --font-display headings, as one part of a deliberate 3-face type system (display/body/mono), not a default single-font choice"
+      },
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "public/index.html"
+        ],
+        "createdAt": "2026-11-23T09:00:09.234Z",
+        "reason": "lightbox <img id=lightbox-img> is intentionally empty until JS sets src on open"
       }
     ]
   }

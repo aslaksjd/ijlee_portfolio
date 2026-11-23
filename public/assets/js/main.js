@@ -125,7 +125,23 @@
         body.appendChild(tagWrap);
       }
 
-      if (entry.images && entry.images.length) {
+      var sections = (entry.sections || []).filter(function (s) {
+        return s && ((s.images && s.images.length) || hasText(s.title));
+      });
+
+      if (sections.length) {
+        sections.forEach(function (section) {
+          if (hasText(section.title)) body.appendChild(text("h4", "content-section-title", section.title));
+          if (section.images && section.images.length) {
+            var sectionImgWrap = el("div", { class: "changelog-images" });
+            section.images.forEach(function (src) {
+              sectionImgWrap.appendChild(el("img", { src: src, alt: section.title || entry.title || "프로젝트 화면", loading: "lazy" }));
+            });
+            body.appendChild(sectionImgWrap);
+          }
+        });
+      } else if (entry.images && entry.images.length) {
+        // legacy flat image list (pre-sections data)
         var imgWrap = el("div", { class: "changelog-images" });
         entry.images.forEach(function (src) {
           imgWrap.appendChild(el("img", { src: src, alt: entry.title || "프로젝트 화면", loading: "lazy" }));
@@ -192,15 +208,33 @@
         body.appendChild(text("p", "skill-description", skill.description));
       }
 
-      var imgWrap = el("div", { class: "skill-images" });
-      if (skill.images && skill.images.length) {
-        skill.images.forEach(function (src) {
-          imgWrap.appendChild(el("img", { src: src, alt: skill.title, loading: "lazy" }));
+      var sections = (skill.sections || []).filter(function (s) {
+        return s && ((s.images && s.images.length) || hasText(s.title));
+      });
+
+      if (sections.length) {
+        sections.forEach(function (section) {
+          if (hasText(section.title)) body.appendChild(text("h4", "content-section-title", section.title));
+          if (section.images && section.images.length) {
+            var sectionImgWrap = el("div", { class: "skill-images" });
+            section.images.forEach(function (src) {
+              sectionImgWrap.appendChild(el("img", { src: src, alt: section.title || skill.title, loading: "lazy" }));
+            });
+            body.appendChild(sectionImgWrap);
+          }
         });
       } else {
-        imgWrap.appendChild(el("img", { src: "assets/img/aiskill/placeholder.svg", alt: "화면 캡처 준비 중" }));
+        var imgWrap = el("div", { class: "skill-images" });
+        if (skill.images && skill.images.length) {
+          // legacy flat image list (pre-sections data)
+          skill.images.forEach(function (src) {
+            imgWrap.appendChild(el("img", { src: src, alt: skill.title, loading: "lazy" }));
+          });
+        } else {
+          imgWrap.appendChild(el("img", { src: "assets/img/aiskill/placeholder.svg", alt: "화면 캡처 준비 중" }));
+        }
+        body.appendChild(imgWrap);
       }
-      body.appendChild(imgWrap);
 
       panel.appendChild(body);
 
@@ -325,7 +359,35 @@
     activate(initial, false);
   }
 
+  function initLightbox() {
+    var lightbox = document.getElementById("lightbox");
+    var lightboxImg = document.getElementById("lightbox-img");
+    if (!lightbox || !lightboxImg) return;
+
+    function close() {
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    document.addEventListener("click", function (e) {
+      var img = e.target.closest(".changelog-images img, .skill-images img");
+      if (img) {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || "";
+        lightbox.classList.add("is-open");
+        lightbox.setAttribute("aria-hidden", "false");
+        return;
+      }
+      if (e.target === lightbox || e.target.closest(".lightbox-close")) close();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") close();
+    });
+  }
+
   initTabs();
+  initLightbox();
 
   fetch("content/content.json", { cache: "no-store" })
     .then(function (res) { return res.json(); })

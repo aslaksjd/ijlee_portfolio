@@ -45,7 +45,9 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background-image:
-    radial-gradient(640px circle at 50% -10%, rgba(255, 153, 0, 0.12), transparent 60%),
+    radial-gradient(1000px circle at 12% -5%, rgba(255, 153, 0, 0.16), transparent 55%),
+    radial-gradient(900px circle at 88% 20%, rgba(170, 170, 170, 0.10), transparent 60%),
+    linear-gradient(165deg, rgba(255, 153, 0, 0.07) 0%, transparent 35%, rgba(180, 180, 180, 0.05) 100%),
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 48px),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 48px);
 }
@@ -221,16 +223,27 @@ main {
   font-weight: 600;
   margin-bottom: 6px;
   position: relative;
-  padding-left: 16px;
+  padding-left: 30px;
 }
 .block-title::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 5px;
-  width: 8px;
-  height: 8px;
-  background: var(--signal);
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+/* section icons — meaningful per tab, not a plain dot */
+#about .block-title::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF9900' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7'/%3E%3C/svg%3E");
+}
+#project .block-title::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF9900' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z'/%3E%3C/svg%3E");
+}
+#ai-utilization .block-title::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF9900' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='7' y='7' width='10' height='10' rx='1'/%3E%3Cpath d='M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'/%3E%3C/svg%3E");
 }
 .block-lede {
   margin: 0 0 32px;
@@ -361,13 +374,64 @@ main {
   border: 1px solid var(--line);
   border-radius: 2px;
   display: block;
+  cursor: zoom-in;
+  transition: border-color 0.15s ease;
 }
+.changelog-images img:hover, .skill-images img:hover { border-color: var(--signal); }
 .changelog-empty, .skill-empty {
   padding: 22px 0;
   color: var(--text-muted);
   font-size: 14.5px;
   border-bottom: 1px solid var(--line);
 }
+.content-section-title {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--signal);
+  margin: 18px 0 10px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+.content-section-title:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ============================================================
+   Lightbox — click any gallery image to see it full size
+   ============================================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: rgba(0, 0, 0, 0.88);
+}
+.lightbox.is-open { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 1px solid var(--line);
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.lightbox-close:hover, .lightbox-close:focus-visible { border-color: var(--signal); color: var(--signal); }
 
 /* ============================================================
    AI Utilization — flat panels, no shadow, varied internal structure
@@ -399,16 +463,18 @@ main {
   font-weight: 600;
   margin: 0 0 6px;
   position: relative;
-  padding-left: 14px;
+  padding-left: 20px;
 }
 .skill-title::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 5px;
-  width: 7px;
-  height: 7px;
-  background: var(--signal);
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF9900'%3E%3Cpath d='M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z'/%3E%3C/svg%3E");
 }
 .skill-summary { margin: 0; color: var(--text-muted); font-size: 14.5px; max-width: 58ch; }
 .skill-toggle {

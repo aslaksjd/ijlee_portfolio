@@ -156,8 +156,12 @@
 
   /* ---------------- changelog editor ---------------- */
 
+  function sectionTemplate() {
+    return { id: nextId("sec"), title: "", images: [], _pending: [] };
+  }
+
   function changelogEntryTemplate() {
-    return { id: nextId("cl"), date: "", title: "", org: "", summary: "", tags: [], images: [], _pending: [] };
+    return { id: nextId("cl"), date: "", title: "", org: "", summary: "", tags: [], sections: [sectionTemplate()] };
   }
 
   function renderChangelogEditor() {
@@ -193,49 +197,29 @@
       entry.tags = tagsInput.value.split(",").map(function (t) { return t.trim(); }).filter(Boolean);
     });
 
-    var thumbs = document.createElement("div");
-    thumbs.className = "entry-thumbs";
-    card.appendChild(thumbs);
+    var sectionsWrap = document.createElement("div");
+    sectionsWrap.className = "entry-sections";
+    card.appendChild(sectionsWrap);
 
-    function renderThumbs() {
-      thumbs.innerHTML = "";
-      (entry.images || []).forEach(function (path, i) {
-        var img = document.createElement("img");
-        img.src = "../" + path;
-        img.alt = "";
-        img.title = "클릭하여 제거";
-        img.addEventListener("click", function () {
-          entry.images.splice(i, 1);
-          renderThumbs();
-        });
-        thumbs.appendChild(img);
-      });
-      (entry._pending || []).forEach(function (p, i) {
-        var img = document.createElement("img");
-        img.src = p.previewUrl;
-        img.title = "업로드 예정 (클릭하여 취소)";
-        img.style.outline = "1px dashed var(--flag)";
-        img.addEventListener("click", function () {
-          entry._pending.splice(i, 1);
-          renderThumbs();
-        });
-        thumbs.appendChild(img);
-      });
-    }
-    renderThumbs();
-
-    var fileField = document.createElement("label");
-    fileField.className = "field-block";
-    fileField.innerHTML = '스크린샷 추가 <input type="file" accept="image/*" multiple>';
-    var fileInput = fileField.querySelector("input");
-    fileInput.addEventListener("change", function () {
-      Array.prototype.forEach.call(fileInput.files, function (file) {
-        entry._pending.push({ file: file, previewUrl: URL.createObjectURL(file) });
-      });
-      fileInput.value = "";
-      renderThumbs();
+    var addSectionBtn = document.createElement("button");
+    addSectionBtn.type = "button";
+    addSectionBtn.className = "btn btn-ghost";
+    addSectionBtn.textContent = "+ 섹션(메뉴) 추가";
+    addSectionBtn.addEventListener("click", function () {
+      entry.sections = entry.sections || [];
+      entry.sections.push(sectionTemplate());
+      renderSections();
     });
-    card.appendChild(fileField);
+
+    function renderSections() {
+      sectionsWrap.innerHTML = "";
+      entry.sections = entry.sections || [];
+      entry.sections.forEach(function (section) {
+        sectionsWrap.appendChild(buildSectionBlock(entry, section, renderSections));
+      });
+      sectionsWrap.appendChild(addSectionBtn);
+    }
+    renderSections();
 
     var foot = document.createElement("div");
     foot.className = "entry-card-foot";
@@ -254,10 +238,84 @@
     return card;
   }
 
+  function buildSectionBlock(entry, section, rerenderSections) {
+    var box = document.createElement("div");
+    box.className = "section-card";
+
+    var titleField = document.createElement("label");
+    titleField.className = "field-block";
+    titleField.innerHTML = '섹션 제목 (예: 1. 대시보드 / 정책 조회) <input type="text">';
+    var titleInput = titleField.querySelector("input");
+    titleInput.value = section.title || "";
+    titleInput.addEventListener("input", function () { section.title = titleInput.value; });
+    box.appendChild(titleField);
+
+    var thumbs = document.createElement("div");
+    thumbs.className = "entry-thumbs";
+    box.appendChild(thumbs);
+
+    function renderThumbs() {
+      thumbs.innerHTML = "";
+      (section.images || []).forEach(function (path, i) {
+        var img = document.createElement("img");
+        img.src = "../" + path;
+        img.alt = "";
+        img.title = "클릭하여 제거";
+        img.addEventListener("click", function () {
+          section.images.splice(i, 1);
+          renderThumbs();
+        });
+        thumbs.appendChild(img);
+      });
+      (section._pending || []).forEach(function (p, i) {
+        var img = document.createElement("img");
+        img.src = p.previewUrl;
+        img.title = "업로드 예정 (클릭하여 취소)";
+        img.style.outline = "1px dashed var(--flag)";
+        img.addEventListener("click", function () {
+          section._pending.splice(i, 1);
+          renderThumbs();
+        });
+        thumbs.appendChild(img);
+      });
+    }
+    renderThumbs();
+
+    var fileField = document.createElement("label");
+    fileField.className = "field-block";
+    fileField.innerHTML = '이미지 추가 <input type="file" accept="image/*" multiple>';
+    var fileInput = fileField.querySelector("input");
+    fileInput.addEventListener("change", function () {
+      section._pending = section._pending || [];
+      Array.prototype.forEach.call(fileInput.files, function (file) {
+        section._pending.push({ file: file, previewUrl: URL.createObjectURL(file) });
+      });
+      fileInput.value = "";
+      renderThumbs();
+    });
+    box.appendChild(fileField);
+
+    var sectionFoot = document.createElement("div");
+    sectionFoot.className = "section-card-foot";
+    var removeSectionBtn = document.createElement("button");
+    removeSectionBtn.type = "button";
+    removeSectionBtn.className = "btn btn-danger btn-sm";
+    removeSectionBtn.textContent = "섹션 삭제";
+    removeSectionBtn.addEventListener("click", function () {
+      var idx = entry.sections.indexOf(section);
+      if (idx >= 0) entry.sections.splice(idx, 1);
+      rerenderSections();
+    });
+    sectionFoot.appendChild(removeSectionBtn);
+    box.appendChild(sectionFoot);
+
+    return box;
+  }
+
   /* ---------------- ai skill editor ---------------- */
 
   function skillEntryTemplate() {
-    return { id: nextId("skill"), title: "", summary: "", description: "", modules: [], tags: [], images: [], _pending: [] };
+    return { id: nextId("skill"), title: "", summary: "", description: "", modules: [], tags: [], sections: [sectionTemplate()] };
   }
 
   function renderSkillEditor() {
@@ -298,49 +356,31 @@
       entry.tags = tagsInput.value.split(",").map(function (t) { return t.trim(); }).filter(Boolean);
     });
 
-    var thumbs = document.createElement("div");
-    thumbs.className = "entry-thumbs";
-    card.appendChild(thumbs);
-
-    function renderThumbs() {
-      thumbs.innerHTML = "";
-      (entry.images || []).forEach(function (path, i) {
-        var img = document.createElement("img");
-        img.src = "../" + path;
-        img.title = "클릭하여 제거 (민감정보 노출 여부를 반드시 확인하세요)";
-        img.addEventListener("click", function () {
-          entry.images.splice(i, 1);
-          renderThumbs();
-        });
-        thumbs.appendChild(img);
-      });
-      (entry._pending || []).forEach(function (p, i) {
-        var img = document.createElement("img");
-        img.src = p.previewUrl;
-        img.style.outline = "1px dashed var(--flag)";
-        img.title = "업로드 예정 (클릭하여 취소)";
-        img.addEventListener("click", function () {
-          entry._pending.splice(i, 1);
-          renderThumbs();
-        });
-        thumbs.appendChild(img);
-      });
-    }
-    renderThumbs();
-
-    var fileField = document.createElement("label");
-    fileField.className = "field-block";
-    fileField.innerHTML = '스크린샷 추가 <input type="file" accept="image/*" multiple>';
-    var fileInput = fileField.querySelector("input");
-    fileInput.addEventListener("change", function () {
-      Array.prototype.forEach.call(fileInput.files, function (file) {
-        entry._pending.push({ file: file, previewUrl: URL.createObjectURL(file) });
-      });
-      fileInput.value = "";
-      renderThumbs();
-    });
-    card.appendChild(fileField);
     card.appendChild(makeHint("업로드 전에 IP, 사내 시스템명 등 민감정보가 찍혀 있지 않은지 직접 확인하세요."));
+
+    var sectionsWrap = document.createElement("div");
+    sectionsWrap.className = "entry-sections";
+    card.appendChild(sectionsWrap);
+
+    var addSectionBtn = document.createElement("button");
+    addSectionBtn.type = "button";
+    addSectionBtn.className = "btn btn-ghost";
+    addSectionBtn.textContent = "+ 섹션(메뉴) 추가";
+    addSectionBtn.addEventListener("click", function () {
+      entry.sections = entry.sections || [];
+      entry.sections.push(sectionTemplate());
+      renderSections();
+    });
+
+    function renderSections() {
+      sectionsWrap.innerHTML = "";
+      entry.sections = entry.sections || [];
+      entry.sections.forEach(function (section) {
+        sectionsWrap.appendChild(buildSectionBlock(entry, section, renderSections));
+      });
+      sectionsWrap.appendChild(addSectionBtn);
+    }
+    renderSections();
 
     var foot = document.createElement("div");
     foot.className = "entry-card-foot";
@@ -376,6 +416,23 @@
     renderSkillEditor();
   }
 
+  // migrate an entry (changelog or aiSkill) to the sections-based image format,
+  // folding any legacy flat `images` array into one unnamed section
+  function migrateToSections(e, idPrefix) {
+    var entry = Object.assign({ id: nextId(idPrefix), tags: [] }, e);
+    if (entry.sections && entry.sections.length) {
+      entry.sections = entry.sections.map(function (sec) {
+        return Object.assign({ id: nextId("sec"), images: [], _pending: [] }, sec);
+      });
+    } else if (entry.images && entry.images.length) {
+      entry.sections = [{ id: nextId("sec"), title: "", images: entry.images.slice(), _pending: [] }];
+    } else {
+      entry.sections = [sectionTemplate()];
+    }
+    delete entry.images;
+    return entry;
+  }
+
   function loadFromRepo() {
     var s = getSettings();
     if (!s.project || !s.token) {
@@ -388,11 +445,11 @@
         var data = JSON.parse(text);
         state.profile = Object.assign(state.profile, data.profile || {});
         state.about = Object.assign(state.about, data.about || {});
-        state.changelog = (data.changelog || []).map(function (e) {
-          return Object.assign({ id: nextId("cl"), tags: [], images: [], _pending: [] }, e);
-        });
+        state.changelog = (data.changelog || []).map(function (e) { return migrateToSections(e, "cl"); });
         state.aiSkills = (data.aiSkills || []).map(function (e) {
-          return Object.assign({ id: nextId("skill"), tags: [], images: [], modules: [], _pending: [] }, e);
+          var entry = migrateToSections(e, "skill");
+          entry.modules = entry.modules || [];
+          return entry;
         });
         populateAllForms();
         setStatus("settings-status", "불러오기 완료.", "ok");
@@ -408,23 +465,26 @@
     var actions = [];
     var imageChecks = [];
 
-    function queueImages(entry, baseDir) {
-      var slug = slugify(entry.title, entry.id);
-      (entry._pending || []).forEach(function (p, i) {
-        var filePath = "assets/img/" + baseDir + "/" + slug + "/" + Date.now().toString(36) + "-" + i + "." + extOf(p.file.name);
-        imageChecks.push(
-          fileToBase64(p.file).then(function (b64) {
-            actions.push({ filePath: "public/" + filePath, base64: b64 });
-            entry.images = entry.images || [];
-            entry.images.push(filePath);
-          })
-        );
+    function queueSectionImages(entry, baseDir) {
+      var entrySlug = slugify(entry.title, entry.id);
+      (entry.sections || []).forEach(function (section, si) {
+        var sectionSlug = slugify(section.title, "section-" + si);
+        (section._pending || []).forEach(function (p, i) {
+          var filePath = "assets/img/" + baseDir + "/" + entrySlug + "/" + sectionSlug + "/" + Date.now().toString(36) + "-" + i + "." + extOf(p.file.name);
+          imageChecks.push(
+            fileToBase64(p.file).then(function (b64) {
+              actions.push({ filePath: "public/" + filePath, base64: b64 });
+              section.images = section.images || [];
+              section.images.push(filePath);
+            })
+          );
+        });
+        section._pending = [];
       });
-      entry._pending = [];
     }
 
-    state.changelog.forEach(function (entry) { queueImages(entry, "changelog"); });
-    state.aiSkills.forEach(function (entry) { queueImages(entry, "aiskill"); });
+    state.changelog.forEach(function (entry) { queueSectionImages(entry, "changelog"); });
+    state.aiSkills.forEach(function (entry) { queueSectionImages(entry, "aiskill"); });
 
     var profilePhotoPromise = Promise.resolve();
     if (pendingProfilePhoto) {
@@ -445,6 +505,10 @@
       var copy = {};
       Object.keys(entry).forEach(function (k) {
         if (k === "_pending" || k === "id") return;
+        if (k === "sections") {
+          copy.sections = (entry.sections || []).map(clean);
+          return;
+        }
         copy[k] = entry[k];
       });
       return copy;
