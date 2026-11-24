@@ -178,8 +178,8 @@ body:not(.is-about) .hero-photo { display: none; }
   justify-content: center;
   gap: 36px;
   padding: 16px var(--gutter);
-  background: rgba(11, 11, 12, 0.92);
-  backdrop-filter: blur(6px);
+  background: rgba(11, 11, 12, 0.5);
+  backdrop-filter: blur(10px);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
