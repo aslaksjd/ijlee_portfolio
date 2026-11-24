@@ -57,7 +57,7 @@
         "company": "파이오링크",
         "role": "Network Security Engineer",
         "dept": "보안사업본부",
-        "detail": "# **담당업무** \n• 서비스 환경 구축 및 운영 : AWS / Tencent / On-Prem\n• DDoS 방어 : AWS Shield / Tencent EdgeOne / IDC\n• 보안 아키텍처 설계 : 신규 서비스 구성 간 보안 아키텍처 방향 제시 및 검토"
+        "detail": ""
       },
       {
         "start": "2025.12.01",
@@ -65,7 +65,8 @@
         "position": "대리",
         "company": "스마일게이트",
         "role": "Service Security Engineer",
-        "dept": "서비스보안운영팀"
+        "dept": "서비스보안운영팀",
+        "detail": "# **담당업무** \n• 서비스 환경 구축 및 운영 : AWS / Tencent / On-Prem\n• DDoS 방어 : AWS Shield / Tencent EdgeOne / IDC\n• 보안 아키텍처 설계 : 신규 서비스 구성 간 보안 아키텍처 방향 제시 및 검토"
       }
     ]
   },
