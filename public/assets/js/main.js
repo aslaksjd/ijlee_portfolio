@@ -386,6 +386,35 @@
     });
   }
 
+  function initIntro() {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.body.classList.add("intro-done");
+      return;
+    }
+
+    var rect = header.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    header.style.setProperty("--intro-dx", (cx - window.innerWidth / 2) + "px");
+    header.style.setProperty("--intro-dy", (cy - window.innerHeight / 2) + "px");
+
+    document.body.classList.add("intro-playing");
+
+    setTimeout(function () {
+      document.body.classList.add("intro-glide");
+    }, 2000);
+
+    setTimeout(function () {
+      document.body.classList.remove("intro-playing", "intro-glide");
+      document.body.classList.add("intro-done");
+      header.style.removeProperty("--intro-dx");
+      header.style.removeProperty("--intro-dy");
+    }, 3100);
+  }
+
+  initIntro();
   initTabs();
   initLightbox();
 
