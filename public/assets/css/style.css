@@ -91,21 +91,30 @@ a { color: inherit; }
   text-align: center;
 }
 .hero-photo, .hero-name, .hero-role {
-  animation: hero-intro 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: hero-intro 2.2s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 @keyframes hero-intro {
   0%   { opacity: 0; transform: scale(1.22); }
   12%  { opacity: 1; transform: scale(1.22); }
-  68%  { opacity: 1; transform: scale(1.22); }
+  55%  { opacity: 1; transform: scale(1.22); }
   100% { opacity: 1; transform: scale(1); }
 }
 .main-nav, #main {
   opacity: 0;
-  animation: content-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) 1.25s both;
+  animation: content-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.95s both;
 }
 @keyframes content-in {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+.main-nav {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  animation: content-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.95s both,
+             nav-border-in 0.01s steps(1, end) 2.45s both;
+}
+@keyframes nav-border-in {
+  to { border-top-color: var(--line); border-bottom-color: var(--line); }
 }
 .hero-photo img {
   width: 264px;
