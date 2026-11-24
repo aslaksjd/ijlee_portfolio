@@ -47,21 +47,24 @@
         "position": "선임",
         "company": "롯데이노베이트",
         "role": "In-House Infra/Security/Network Operation",
-        "detail": "**굵게** test"
+        "detail": "**굵게** test",
+        "dept": "롯데지주IS팀"
       },
       {
         "start": "2021.06.03",
         "end": "2023.08.07",
         "position": "대리",
         "company": "파이오링크",
-        "role": "Network Security Engineer"
+        "role": "Network Security Engineer",
+        "dept": "보안사업본부"
       },
       {
         "start": "2025.12.01",
         "end": "재직 중",
         "position": "대리",
         "company": "스마일게이트",
-        "role": "Service Security Engineer"
+        "role": "Service Security Engineer",
+        "dept": "서비스보안운영팀"
       }
     ]
   },
