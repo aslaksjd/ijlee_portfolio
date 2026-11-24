@@ -411,10 +411,105 @@
       document.body.classList.add("intro-done");
       header.style.removeProperty("--intro-dx");
       header.style.removeProperty("--intro-dy");
+      window.dispatchEvent(new Event("scroll")); // re-evaluate nav stuck state now the header is back in flow
     }, 2600);
   }
 
+  function initNavStuck() {
+    var nav = document.querySelector(".main-nav");
+    if (!nav) return;
+    function update() {
+      nav.classList.toggle("is-stuck", nav.getBoundingClientRect().top <= 0);
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+  }
+
+  function initBackground() {
+    var canvas = document.getElementById("bg-net");
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var LINK = 150;
+    var w, h, raf;
+
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+
+    var nodes = [];
+    var count = Math.min(90, Math.round((w * h) / 16000));
+    for (var i = 0; i < count; i++) {
+      nodes.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.4 + 0.6
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < nodes.length; i++) {
+        var a = nodes[i];
+        for (var j = i + 1; j < nodes.length; j++) {
+          var b = nodes[j];
+          var dx = a.x - b.x, dy = a.y - b.y;
+          var d2 = dx * dx + dy * dy;
+          if (d2 < LINK * LINK) {
+            ctx.strokeStyle = "rgba(255, 153, 0, " + (1 - Math.sqrt(d2) / LINK) * 0.16 + ")";
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.fillStyle = "rgba(255, 186, 102, 0.45)";
+      nodes.forEach(function (n) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function step() {
+      nodes.forEach(function (n) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+      });
+      draw();
+      raf = requestAnimationFrame(step);
+    }
+
+    window.addEventListener("resize", function () {
+      resize();
+      if (reduce) draw();
+    });
+
+    if (reduce) {
+      draw();
+      return;
+    }
+    raf = requestAnimationFrame(step);
+    document.addEventListener("visibilitychange", function () {
+      cancelAnimationFrame(raf);
+      if (!document.hidden) raf = requestAnimationFrame(step);
+    });
+  }
+
+  initBackground();
   initIntro();
+  initNavStuck();
   initTabs();
   initLightbox();
 
