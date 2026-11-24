@@ -43,53 +43,60 @@
     "career": [
       {
         "start": "2023.08.08",
-        "end": "재직 중",
+        "end": "2025.11.24",
         "position": "선임",
         "company": "롯데이노베이트",
-        "role": "인프라보안 운영 (보안, 네트워크, 서버, Cloud)"
+        "role": "In-House Infra/Security/Network Operation"
       },
       {
         "start": "2021.06.03",
         "end": "2023.08.07",
         "position": "대리",
         "company": "파이오링크",
-        "role": "엔지니어 (보안, 네트워크)"
+        "role": "Network Security Engineer"
       },
       {
         "start": "2020.11.16",
         "end": "2021.06.02",
         "position": "사원",
         "company": "SP정보기술",
-        "role": "엔지니어 (보안, 네트워크)"
+        "role": "Network Security Engineer"
+      },
+      {
+        "start": "2025.12.01",
+        "end": "재직 중",
+        "position": "대리",
+        "company": "스마일게이트",
+        "role": "Service Security Engineer"
       }
     ]
   },
   "changelog": [
     {
+      "tags": [],
       "date": "",
       "title": "",
       "org": "",
       "summary": "",
-      "tags": [],
       "sections": [
         {
-          "title": "",
-          "images": []
+          "images": [],
+          "title": ""
         }
       ]
     }
   ],
   "aiSkills": [
     {
+      "tags": [],
       "title": "FortiGate 정책 자동화 도구",
       "summary": "",
       "description": "",
       "modules": [],
-      "tags": [],
       "sections": [
         {
-          "title": "",
-          "images": []
+          "images": [],
+          "title": ""
         }
       ]
     }
