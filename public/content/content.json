@@ -71,14 +71,18 @@
   "changelog": [
     {
       "tags": [],
-      "date": "",
-      "title": "",
-      "org": "",
-      "summary": "",
+      "date": "2020.11 - 2026.11",
+      "title": "test",
+      "org": "스마일게이트",
+      "summary": "test",
       "sections": [
         {
           "images": [],
-          "title": ""
+          "title": "test"
+        },
+        {
+          "title": "ttest",
+          "images": []
         }
       ]
     }
