@@ -161,7 +161,8 @@ input[type="file"] {
 .row-card .span-wide { grid-column: span 2; }
 .row-card .span-full { grid-column: 1 / -1; }
 .row-card input::placeholder,
-.row-card textarea::placeholder { opacity: 0.4; font-style: italic; }
+.row-card textarea::placeholder,
+.rich-field textarea::placeholder { opacity: 0.4; font-style: italic; }
 .rich-field { display: flex; flex-direction: column; gap: 6px; }
 .rich-caption { font-size: 13px; color: var(--text-muted); }
 .rich-toolbar { display: flex; gap: 6px; flex-wrap: wrap; }

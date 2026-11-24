@@ -204,7 +204,7 @@
 
   function buildRichField(row, f) {
     var wrap = document.createElement("div");
-    wrap.className = "span-full rich-field";
+    wrap.className = "span-2 span-full rich-field";
     var cap = document.createElement("span");
     cap.className = "rich-caption";
     cap.textContent = f[1];
@@ -330,16 +330,16 @@
       '<label>날짜 <input data-f="date" type="text" placeholder="2023.05"></label>' +
       '<label>소속/조직 <input data-f="org" type="text"></label>' +
       '<label class="span-2">제목 <input data-f="title" type="text"></label>' +
-      '<label class="span-2">설명 <textarea data-f="summary" rows="3"></textarea></label>' +
       '<label class="span-2">태그 (쉼표로 구분) <input data-f="tags" type="text" placeholder="FortiGate, 자동화"></label>';
     card.appendChild(grid);
 
-    ["date", "org", "title", "summary"].forEach(function (f) {
+    ["date", "org", "title"].forEach(function (f) {
       var input = grid.querySelector('[data-f="' + f + '"]');
       input.value = entry[f] || "";
       input.addEventListener("input", function () { entry[f] = input.value; });
     });
     var tagsInput = grid.querySelector('[data-f="tags"]');
+    grid.insertBefore(buildRichField(entry, ["summary", "설명", "프로젝트 설명을 자유롭게 적어주세요."]), tagsInput.parentNode);
     tagsInput.value = (entry.tags || []).join(", ");
     tagsInput.addEventListener("input", function () {
       entry.tags = tagsInput.value.split(",").map(function (t) { return t.trim(); }).filter(Boolean);
@@ -483,17 +483,17 @@
     grid.innerHTML =
       '<label class="span-2">제목 <input data-f="title" type="text"></label>' +
       '<label class="span-2">한 줄 요약 <input data-f="summary" type="text"></label>' +
-      '<label class="span-2">상세 설명 <textarea data-f="description" rows="3"></textarea></label>' +
       '<label class="span-2">구성 모듈 (줄바꿈으로 구분) <textarea data-f="modules" rows="3"></textarea></label>' +
       '<label class="span-2">태그 (쉼표로 구분) <input data-f="tags" type="text"></label>';
     card.appendChild(grid);
 
-    ["title", "summary", "description"].forEach(function (f) {
+    ["title", "summary"].forEach(function (f) {
       var input = grid.querySelector('[data-f="' + f + '"]');
       input.value = entry[f] || "";
       input.addEventListener("input", function () { entry[f] = input.value; });
     });
     var modulesInput = grid.querySelector('[data-f="modules"]');
+    grid.insertBefore(buildRichField(entry, ["description", "상세 설명", "제작 배경, 구성, 효과 등을 자유롭게 적어주세요."]), modulesInput.parentNode);
     modulesInput.value = (entry.modules || []).join("\n");
     modulesInput.addEventListener("input", function () {
       entry.modules = modulesInput.value.split("\n").map(function (m) { return m.trim(); }).filter(Boolean);

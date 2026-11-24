@@ -299,7 +299,11 @@
 
       var body = el("div", { class: "changelog-body" });
 
-      if (hasText(entry.summary)) body.appendChild(text("p", "changelog-summary", entry.summary));
+      if (hasText(entry.summary)) {
+        var summaryEl = renderRich(entry.summary);
+        summaryEl.classList.add("changelog-summary");
+        body.appendChild(summaryEl);
+      }
 
       if (entry.tags && entry.tags.length) {
         var tagWrap = el("div", { class: "changelog-tags" });
@@ -387,7 +391,9 @@
       }
 
       if (hasText(skill.description)) {
-        body.appendChild(text("p", "skill-description", skill.description));
+        var descEl = renderRich(skill.description);
+        descEl.classList.add("skill-description");
+        body.appendChild(descEl);
       }
 
       var sections = (skill.sections || []).filter(function (s) {
