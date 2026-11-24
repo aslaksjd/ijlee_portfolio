@@ -8,10 +8,10 @@
     "photoFallback": "assets/img/profile/placeholder.svg"
   },
   "about": {
-    "name": "",
-    "birth": "",
-    "address": "",
-    "email": "",
+    "name": "이인직",
+    "birth": "1997.06.26",
+    "address": "서울특별시 송파구",
+    "email": "aslaksjd@naver.com",
     "education": "",
     "company": "",
     "bio": ""
@@ -38,7 +38,12 @@
       "description": "",
       "modules": [],
       "tags": [],
-      "sections": []
+      "sections": [
+        {
+          "title": "",
+          "images": []
+        }
+      ]
     }
   ]
 }
