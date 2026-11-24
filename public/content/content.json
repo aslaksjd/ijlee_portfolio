@@ -47,7 +47,7 @@
         "position": "선임",
         "company": "롯데이노베이트",
         "role": "In-House Infra/Security/Network Operation",
-        "detail": "**굵게** test",
+        "detail": "##**주업무**\n#겸직(롯데미래전략연구소IS팀)\n• End보안솔루션 운영 : DRM DLP OTP 서버/DB접근제어 SSLVPN\n• Private Cloud 운영 : 그룹 Private Cloud 시스템 구축 및 운영\n• 시스템 도입 설계/기획 : 보안 시스템 도입 기획 및 타당성(배경·목적·효과) 분석 및 도입\n• 보안 기획 / 시스템 개선 : 보안성과 사용성의 최적 균형점을 도출하는 보안 기획·시스템 고도화\n• 심사 대응 : 그룹 취약점 진단, ISMS-P, ITGC 등 인증·감사 대응\n\n#***",
         "dept": "롯데지주IS팀"
       },
       {
