@@ -47,7 +47,7 @@ body::before {
   background-image:
     radial-gradient(1000px circle at 12% -5%, rgba(255, 153, 0, 0.16), transparent 55%),
     radial-gradient(900px circle at 88% 20%, rgba(170, 170, 170, 0.10), transparent 60%),
-    linear-gradient(45deg, rgba(255, 153, 0, 0.11) 0%, rgba(255, 153, 0, 0.045) 45%, transparent 80%),
+    linear-gradient(45deg, rgba(255, 153, 0, 0.22) 0%, rgba(255, 153, 0, 0.09) 45%, transparent 80%),
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 48px),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 48px);
 }
@@ -117,16 +117,21 @@ body.intro-playing .hero-role {
   visibility: hidden;
 }
 body.intro-playing .main-nav,
-body.intro-playing #main {
+body.intro-playing #main,
+body.intro-playing .site-footer {
   opacity: 0;
 }
 body.intro-playing .main-nav {
   border-top-color: transparent;
   border-bottom-color: transparent;
 }
+body.intro-playing .site-footer {
+  border-top-color: transparent;
+}
 body.intro-done .hero-role,
 body.intro-done .main-nav,
-body.intro-done #main {
+body.intro-done #main,
+body.intro-done .site-footer {
   animation: content-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 @keyframes content-in {

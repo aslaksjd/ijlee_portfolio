@@ -404,14 +404,14 @@
 
     setTimeout(function () {
       document.body.classList.add("intro-glide");
-    }, 2000);
+    }, 1500);
 
     setTimeout(function () {
       document.body.classList.remove("intro-playing", "intro-glide");
       document.body.classList.add("intro-done");
       header.style.removeProperty("--intro-dx");
       header.style.removeProperty("--intro-dy");
-    }, 3100);
+    }, 2600);
   }
 
   initIntro();
