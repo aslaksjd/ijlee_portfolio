@@ -12,9 +12,57 @@
     "birth": "1997.06.26",
     "address": "서울특별시 송파구",
     "email": "aslaksjd@naver.com",
-    "education": "",
-    "company": "",
-    "bio": ""
+    "education": [
+      {
+        "type": "고등학교",
+        "start": "2013.03",
+        "end": "2016.02",
+        "school": "북평고등학교",
+        "status": "졸업",
+        "location": "강원"
+      },
+      {
+        "type": "대학교(학사)",
+        "start": "2016.03",
+        "end": "2022.07",
+        "school": "서울호서전문학교",
+        "major": "정보보호학 학사",
+        "status": "졸업",
+        "location": "서울"
+      },
+      {
+        "type": "대학교(편입)",
+        "start": "2022.08",
+        "end": "2025.07",
+        "school": "한국방송통신대학교",
+        "major": "컴퓨터과학 학사",
+        "status": "졸업",
+        "location": "서울"
+      }
+    ],
+    "career": [
+      {
+        "start": "2023.08.08",
+        "end": "재직 중",
+        "position": "선임",
+        "company": "롯데이노베이트",
+        "role": "인프라보안 운영 (보안, 네트워크, 서버, Cloud)"
+      },
+      {
+        "start": "2021.06.03",
+        "end": "2023.08.07",
+        "position": "대리",
+        "company": "파이오링크",
+        "role": "엔지니어 (보안, 네트워크)"
+      },
+      {
+        "start": "2020.11.16",
+        "end": "2021.06.02",
+        "position": "사원",
+        "company": "SP정보기술",
+        "role": "엔지니어 (보안, 네트워크)"
+      }
+    ]
   },
   "changelog": [
     {
