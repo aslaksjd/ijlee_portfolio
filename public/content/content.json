@@ -8,7 +8,7 @@
     "photoFallback": "assets/img/profile/placeholder.svg"
   },
   "about": {
-    "name": "이인직tt",
+    "name": "이인직",
     "birth": "1997.06.26",
     "address": "서울특별시 송파구",
     "email": "aslaksjd@naver.com",
@@ -56,7 +56,8 @@
         "position": "대리",
         "company": "파이오링크",
         "role": "Network Security Engineer",
-        "dept": "보안사업본부"
+        "dept": "보안사업본부",
+        "detail": "# **담당업무** \n• 서비스 환경 구축 및 운영 : AWS / Tencent / On-Prem\n• DDoS 방어 : AWS Shield / Tencent EdgeOne / IDC\n• 보안 아키텍처 설계 : 신규 서비스 구성 간 보안 아키텍처 방향 제시 및 검토"
       },
       {
         "start": "2025.12.01",
