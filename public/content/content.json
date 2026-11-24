@@ -85,7 +85,7 @@
       "tags": [],
       "title": "FPMS (방화벽 정책 관리 시스템)",
       "summary": "FW 운영 중 발생하는 정책 생성 / 제거 / 최적화, ISMS-P 심사 대응 업무 처리 시간 단축",
-      "description": "test",
+      "description": "제작 배경\n1. FW 운영 업무 처리 간 과도한 정책 검토 및 추가 요청으로 인하여 처리 속도의 지연\n2. 무수히 많은 서버 개 수(Cloud / On-Prem 도합 2만대+)로 인한 검토의 한계\n3. 잦은 부서 및 담당자 변경 및 history 누락으로 인한 최적화 진행의 어려움\n\n",
       "modules": [],
       "sections": [
         {
@@ -96,11 +96,11 @@
           "title": "대시보드"
         },
         {
-          "title": "정책 관리",
           "images": [
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/정책-관리/mwuepif4-0.png",
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/정책-관리/mwuepif4-1.png"
-          ]
+          ],
+          "title": "정책 관리"
         }
       ]
     }
