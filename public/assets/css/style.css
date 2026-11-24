@@ -320,20 +320,45 @@ main {
   font-style: normal;
 }
 /* education / career — timeline rows inside a spec-sheet value cell */
+.spec-divider {
+  grid-column: 1 / -1;
+  height: 1px;
+  margin: 6px 0;
+  background: rgba(255, 255, 255, 0.09);
+}
 .spec-list {
   list-style: none;
   margin: 0;
   padding: 0 0 0 18px;
-  border-left: 1px solid var(--line);
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+/* time axis: dim at the oldest entry, orange at the newest, arrowhead = direction */
+.spec-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: -2px;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), var(--signal));
+}
+.spec-list::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  bottom: -9px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid var(--signal);
 }
 .spec-list li { position: relative; }
 .spec-list li::before {
   content: "";
   position: absolute;
-  left: -21.5px;
+  left: -20px;
   top: 6px;
   width: 6px;
   height: 6px;

@@ -77,8 +77,20 @@
     }]
   ];
 
+  // oldest first; "2016.03" < "2016.03.05" < "2016.04" compare correctly as plain strings,
+  // rows without a start date go last
+  function byStart(a, b) {
+    var x = hasText(a.start) ? a.start.trim() : "￿";
+    var y = hasText(b.start) ? b.start.trim() : "￿";
+    return x < y ? -1 : x > y ? 1 : 0;
+  }
+
   function rowsOf(value) {
-    if (Array.isArray(value)) return value.filter(function (r) { return r && Object.keys(r).some(function (k) { return hasText(r[k]); }); });
+    if (Array.isArray(value)) {
+      return value
+        .filter(function (r) { return r && Object.keys(r).some(function (k) { return hasText(r[k]); }); })
+        .sort(byStart);
+    }
     return hasText(value) ? value : []; // legacy plain-text value
   }
 
@@ -106,8 +118,9 @@
       sheet.appendChild(hasText(value) ? text("dd", null, value) : emptyDd());
     });
 
-    ABOUT_LISTS.forEach(function (l) {
+    ABOUT_LISTS.forEach(function (l, i) {
       var rows = rowsOf(about[l[0]]);
+      if (i > 0) sheet.appendChild(el("div", { class: "spec-divider", "aria-hidden": "true" }));
       sheet.appendChild(text("dt", null, l[1]));
       if (typeof rows === "string") {
         sheet.appendChild(text("dd", null, rows));

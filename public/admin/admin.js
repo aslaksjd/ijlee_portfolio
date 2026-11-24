@@ -188,7 +188,7 @@
         label.textContent = f[1] + " ";
         var input = document.createElement("input");
         input.type = "text";
-        input.placeholder = f[2];
+        input.placeholder = f[2] ? "예) " + f[2] : "";
         input.value = row[f[0]] || "";
         input.addEventListener("input", function () { row[f[0]] = input.value; });
         label.appendChild(input);
@@ -198,23 +198,14 @@
 
       var foot = document.createElement("div");
       foot.className = "row-card-foot";
-      function btn(label, cls, onClick, disabled) {
+      function btn(label, cls, onClick) {
         var b = document.createElement("button");
         b.type = "button";
         b.className = "btn btn-sm " + cls;
         b.textContent = label;
-        b.disabled = !!disabled;
         b.addEventListener("click", onClick);
         foot.appendChild(b);
       }
-      btn("↑", "btn-ghost", function () {
-        list.splice(idx - 1, 0, list.splice(idx, 1)[0]);
-        renderRowEditor(rootId, list, fields);
-      }, idx === 0);
-      btn("↓", "btn-ghost", function () {
-        list.splice(idx + 1, 0, list.splice(idx, 1)[0]);
-        renderRowEditor(rootId, list, fields);
-      }, idx === list.length - 1);
       btn("삭제", "btn-danger", function () {
         list.splice(idx, 1);
         renderRowEditor(rootId, list, fields);
@@ -523,6 +514,21 @@
     return entry;
   }
 
+  var contentLoaded = false;
+
+  function applyContent(data) {
+    state.profile = Object.assign(state.profile, data.profile || {});
+    state.about = normalizeAbout(Object.assign(state.about, data.about || {}));
+    state.changelog = (data.changelog || []).map(function (e) { return migrateToSections(e, "cl"); });
+    state.aiSkills = (data.aiSkills || []).map(function (e) {
+      var entry = migrateToSections(e, "skill");
+      entry.modules = entry.modules || [];
+      return entry;
+    });
+    contentLoaded = true;
+    populateAllForms();
+  }
+
   function loadFromRepo() {
     var s = getSettings();
     if (!s.project || !s.token) {
@@ -532,16 +538,7 @@
     setStatus("settings-status", "불러오는 중…");
     getRawFile(s, CONTENT_PATH)
       .then(function (text) {
-        var data = JSON.parse(text);
-        state.profile = Object.assign(state.profile, data.profile || {});
-        state.about = normalizeAbout(Object.assign(state.about, data.about || {}));
-        state.changelog = (data.changelog || []).map(function (e) { return migrateToSections(e, "cl"); });
-        state.aiSkills = (data.aiSkills || []).map(function (e) {
-          var entry = migrateToSections(e, "skill");
-          entry.modules = entry.modules || [];
-          return entry;
-        });
-        populateAllForms();
+        applyContent(JSON.parse(text));
         setStatus("settings-status", "불러오기 완료.", "ok");
       })
       .catch(function (err) {
@@ -617,6 +614,10 @@
       setStatus("save-status", "GitHub 설정(저장소, 토큰)을 먼저 입력하고 저장하세요.", "err");
       return;
     }
+    if (!contentLoaded) {
+      setStatus("save-status", "기존 내용을 아직 불러오지 못했습니다. 저장하면 기존 내용이 지워지므로, 위의 '저장소에서 불러오기'를 먼저 누르세요.", "err");
+      return;
+    }
     setStatus("save-status", "이미지 업로드 준비 중…");
 
     collectActions(s).then(function (actions) {
@@ -654,13 +655,21 @@
     document.getElementById("set-branch").value = saved.branch || "main";
     document.getElementById("set-token").value = saved.token || "";
 
-    if (state.changelog.length === 0) state.changelog.push(changelogEntryTemplate());
-    if (state.aiSkills.length === 0) {
-      var fspm = skillEntryTemplate();
-      fspm.title = "FortiGate 정책 자동화 도구";
-      state.aiSkills.push(fspm);
-    }
     populateAllForms();
+
+    // the deployed content.json is public and same-origin, so no token is needed to read it
+    fetch("../content/content.json", { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        applyContent(data);
+        setStatus("settings-status", "현재 사이트의 내용을 불러왔습니다.", "ok");
+      })
+      .catch(function () {
+        setStatus("settings-status", "현재 내용을 자동으로 불러오지 못했습니다. '저장소에서 불러오기'를 눌러주세요.", "err");
+      });
 
     document.getElementById("btn-save-settings").addEventListener("click", function () {
       var s = getSettings();

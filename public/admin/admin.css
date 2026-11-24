@@ -159,6 +159,7 @@ input[type="file"] {
 }
 .row-card .admin-grid { grid-template-columns: repeat(3, 1fr); gap: 10px 12px; }
 .row-card .span-wide { grid-column: span 2; }
+.row-card input::placeholder { opacity: 0.4; font-style: italic; }
 @media (max-width: 560px) {
   .row-card .admin-grid { grid-template-columns: 1fr; }
   .row-card .span-wide { grid-column: auto; }
