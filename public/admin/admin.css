@@ -144,6 +144,27 @@ input[type="file"] {
 .section-card-foot { display: flex; justify-content: flex-end; margin-top: 10px; }
 .btn-sm { padding: 5px 10px; font-size: 12.5px; }
 
+.row-group {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.row-group h3 { font-size: 15px; margin: 0; }
+.row-card {
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--signal);
+  background: var(--panel-2);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.row-card .admin-grid { grid-template-columns: repeat(3, 1fr); gap: 10px 12px; }
+.row-card .span-wide { grid-column: span 2; }
+@media (max-width: 560px) {
+  .row-card .admin-grid { grid-template-columns: 1fr; }
+  .row-card .span-wide { grid-column: auto; }
+}
+.row-card-foot { display: flex; justify-content: flex-end; gap: 6px; margin-top: 10px; }
+
 .admin-savebar {
   position: fixed;
   left: 0; right: 0; bottom: 0;

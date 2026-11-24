@@ -50,18 +50,45 @@
     ["name", "이름"],
     ["birth", "생년월일"],
     ["address", "주소"],
-    ["email", "이메일"],
-    ["education", "학력"],
-    ["company", "회사"],
-    ["bio", "한 줄 이력"]
+    ["email", "이메일"]
   ];
+
+  function joinText(parts, sep) {
+    return parts.filter(hasText).join(sep);
+  }
+
+  // each row → { period, title, sub, meta } for the timeline list
+  var ABOUT_LISTS = [
+    ["education", "학력", function (r) {
+      return {
+        period: joinText([r.start, r.end], " — "),
+        title: r.school,
+        sub: r.type,
+        meta: joinText([r.major, r.status, r.location], " · ")
+      };
+    }],
+    ["career", "경력", function (r) {
+      return {
+        period: joinText([r.start, r.end], " — "),
+        title: r.company,
+        sub: r.position,
+        meta: r.role
+      };
+    }]
+  ];
+
+  function rowsOf(value) {
+    if (Array.isArray(value)) return value.filter(function (r) { return r && Object.keys(r).some(function (k) { return hasText(r[k]); }); });
+    return hasText(value) ? value : []; // legacy plain-text value
+  }
 
   function renderAbout(about) {
     var sheet = document.getElementById("about-sheet");
     sheet.innerHTML = "";
     about = about || {};
 
-    var any = ABOUT_FIELDS.some(function (f) { return hasText(about[f[0]]); });
+    var any = ABOUT_FIELDS.some(function (f) { return hasText(about[f[0]]); }) ||
+      ABOUT_LISTS.some(function (l) { return rowsOf(about[l[0]]).length > 0; });
     if (!any) {
       sheet.appendChild(el("div", { class: "changelog-empty", style: "grid-column: 1 / -1;" }, [
         text("span", null, "아직 입력된 소개가 없습니다. 관리자 패널에서 채워 보세요.")
@@ -69,15 +96,39 @@
       return;
     }
 
+    function emptyDd() {
+      return el("dd", { class: "empty" }, [text("span", null, "—")]);
+    }
+
     ABOUT_FIELDS.forEach(function (f) {
-      var key = f[0], label = f[1];
-      var value = about[key];
-      sheet.appendChild(text("dt", null, label));
-      if (hasText(value)) {
-        sheet.appendChild(text("dd", null, value));
-      } else {
-        sheet.appendChild(el("dd", { class: "empty" }, [text("span", null, "—")]));
+      var value = about[f[0]];
+      sheet.appendChild(text("dt", null, f[1]));
+      sheet.appendChild(hasText(value) ? text("dd", null, value) : emptyDd());
+    });
+
+    ABOUT_LISTS.forEach(function (l) {
+      var rows = rowsOf(about[l[0]]);
+      sheet.appendChild(text("dt", null, l[1]));
+      if (typeof rows === "string") {
+        sheet.appendChild(text("dd", null, rows));
+        return;
       }
+      if (!rows.length) {
+        sheet.appendChild(emptyDd());
+        return;
+      }
+      var list = el("ol", { class: "spec-list" });
+      rows.forEach(function (r) {
+        var v = l[2](r);
+        var title = text("span", "spec-item-title", v.title || "");
+        if (hasText(v.sub)) title.appendChild(text("span", "spec-sub", v.sub));
+        list.appendChild(el("li", null, [
+          hasText(v.period) ? text("span", "spec-period", v.period) : null,
+          title,
+          hasText(v.meta) ? text("span", "spec-meta", v.meta) : null
+        ]));
+      });
+      sheet.appendChild(el("dd", null, [list]));
     });
   }
 

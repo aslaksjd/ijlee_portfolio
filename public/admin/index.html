@@ -54,9 +54,22 @@
       <label>생년월일 <input data-field="birth" type="text" placeholder="1990.01.01"></label>
       <label>주소 <input data-field="address" type="text" placeholder="서울특별시 ○○구"></label>
       <label>이메일 <input data-field="email" type="email"></label>
-      <label>학력 <input data-field="education" type="text"></label>
-      <label>회사 <input data-field="company" type="text"></label>
-      <label class="span-2">한 줄 이력 <input data-field="bio" type="text" placeholder="예: 2021~ ○○ 보안엔지니어 / 방화벽 정책 자동화 담당"></label>
+    </div>
+
+    <div class="row-group">
+      <div class="admin-card-head">
+        <h3>학력</h3>
+        <button id="btn-add-education" class="btn btn-sm" type="button">+ 학력 추가</button>
+      </div>
+      <div id="education-editor"></div>
+    </div>
+
+    <div class="row-group">
+      <div class="admin-card-head">
+        <h3>경력</h3>
+        <button id="btn-add-career" class="btn btn-sm" type="button">+ 경력 추가</button>
+      </div>
+      <div id="career-editor"></div>
     </div>
   </section>
 

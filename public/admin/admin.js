@@ -6,7 +6,7 @@
 
   var state = {
     profile: { name: "", role: "", headline: "", subhead: "", photo: "assets/img/profile/me.jpg", photoFallback: "assets/img/profile/placeholder.svg" },
-    about: { name: "", birth: "", address: "", email: "", education: "", company: "", bio: "" },
+    about: { name: "", birth: "", address: "", email: "", education: [], career: [] },
     changelog: [],
     aiSkills: []
   };
@@ -152,6 +152,95 @@
         target[input.dataset.field] = input.value;
       });
     });
+  }
+
+  /* ---------------- about: education / career rows ---------------- */
+
+  // [key, label, placeholder, wide?]
+  var EDUCATION_FIELDS = [
+    ["type", "구분", "대학교(학사)"],
+    ["start", "입학년월", "2016.03"],
+    ["end", "졸업년월", "2022.07"],
+    ["school", "학교명", "", true],
+    ["major", "전공", "정보보호학 학사"],
+    ["status", "졸업구분", "졸업"],
+    ["location", "소재지", "서울"]
+  ];
+  var CAREER_FIELDS = [
+    ["start", "입사", "2023.08"],
+    ["end", "퇴사", "재직 중"],
+    ["position", "직위", "선임"],
+    ["company", "회사명", "", true],
+    ["role", "직무", "인프라보안 운영 (보안, 네트워크, 서버, Cloud)", true]
+  ];
+
+  function renderRowEditor(rootId, list, fields) {
+    var root = document.getElementById(rootId);
+    root.innerHTML = "";
+    list.forEach(function (row, idx) {
+      var card = document.createElement("div");
+      card.className = "row-card";
+      var grid = document.createElement("div");
+      grid.className = "admin-grid";
+      fields.forEach(function (f) {
+        var label = document.createElement("label");
+        if (f[3]) label.className = "span-wide";
+        label.textContent = f[1] + " ";
+        var input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = f[2];
+        input.value = row[f[0]] || "";
+        input.addEventListener("input", function () { row[f[0]] = input.value; });
+        label.appendChild(input);
+        grid.appendChild(label);
+      });
+      card.appendChild(grid);
+
+      var foot = document.createElement("div");
+      foot.className = "row-card-foot";
+      function btn(label, cls, onClick, disabled) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "btn btn-sm " + cls;
+        b.textContent = label;
+        b.disabled = !!disabled;
+        b.addEventListener("click", onClick);
+        foot.appendChild(b);
+      }
+      btn("↑", "btn-ghost", function () {
+        list.splice(idx - 1, 0, list.splice(idx, 1)[0]);
+        renderRowEditor(rootId, list, fields);
+      }, idx === 0);
+      btn("↓", "btn-ghost", function () {
+        list.splice(idx + 1, 0, list.splice(idx, 1)[0]);
+        renderRowEditor(rootId, list, fields);
+      }, idx === list.length - 1);
+      btn("삭제", "btn-danger", function () {
+        list.splice(idx, 1);
+        renderRowEditor(rootId, list, fields);
+      });
+      card.appendChild(foot);
+      root.appendChild(card);
+    });
+  }
+
+  function renderAboutLists() {
+    renderRowEditor("education-editor", state.about.education, EDUCATION_FIELDS);
+    renderRowEditor("career-editor", state.about.career, CAREER_FIELDS);
+  }
+
+  // older content.json stored education/company as one string and had a `bio` line
+  function normalizeAbout(a) {
+    function toRows(v, key) {
+      if (Array.isArray(v)) return v;
+      if (typeof v === "string" && v.trim()) { var r = {}; r[key] = v.trim(); return [r]; }
+      return [];
+    }
+    a.education = toRows(a.education, "school");
+    a.career = toRows(a.career !== undefined ? a.career : a.company, "company");
+    delete a.company;
+    delete a.bio;
+    return a;
   }
 
   /* ---------------- changelog editor ---------------- */
@@ -411,6 +500,7 @@
 
   function populateAllForms() {
     bindSimpleForm("about-form", state.about);
+    renderAboutLists();
     bindSimpleForm("profile-form", state.profile);
     renderChangelogEditor();
     renderSkillEditor();
@@ -444,7 +534,7 @@
       .then(function (text) {
         var data = JSON.parse(text);
         state.profile = Object.assign(state.profile, data.profile || {});
-        state.about = Object.assign(state.about, data.about || {});
+        state.about = normalizeAbout(Object.assign(state.about, data.about || {}));
         state.changelog = (data.changelog || []).map(function (e) { return migrateToSections(e, "cl"); });
         state.aiSkills = (data.aiSkills || []).map(function (e) {
           var entry = migrateToSections(e, "skill");
@@ -584,6 +674,14 @@
       s.token = "";
       saveSettingsToStorage(s);
       setStatus("settings-status", "토큰을 지웠습니다.", "ok");
+    });
+    document.getElementById("btn-add-education").addEventListener("click", function () {
+      state.about.education.push({});
+      renderAboutLists();
+    });
+    document.getElementById("btn-add-career").addEventListener("click", function () {
+      state.about.career.push({});
+      renderAboutLists();
     });
     document.getElementById("btn-add-changelog").addEventListener("click", function () {
       state.changelog.push(changelogEntryTemplate());
