@@ -159,7 +159,14 @@ input[type="file"] {
 }
 .row-card .admin-grid { grid-template-columns: repeat(3, 1fr); gap: 10px 12px; }
 .row-card .span-wide { grid-column: span 2; }
-.row-card input::placeholder { opacity: 0.4; font-style: italic; }
+.row-card .span-full { grid-column: 1 / -1; }
+.row-card input::placeholder,
+.row-card textarea::placeholder { opacity: 0.4; font-style: italic; }
+.rich-field { display: flex; flex-direction: column; gap: 6px; }
+.rich-caption { font-size: 13px; color: var(--text-muted); }
+.rich-toolbar { display: flex; gap: 6px; flex-wrap: wrap; }
+.rich-field textarea { min-height: 150px; line-height: 1.6; }
+.rich-field .admin-hint { margin: 0; font-size: 12px; }
 @media (max-width: 560px) {
   .row-card .admin-grid { grid-template-columns: 1fr; }
   .row-card .span-wide { grid-column: auto; }

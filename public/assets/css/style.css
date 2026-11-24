@@ -354,8 +354,8 @@ main {
   border-right: 5px solid transparent;
   border-top: 8px solid var(--signal);
 }
-.spec-list li { position: relative; }
-.spec-list li::before {
+.spec-list > li { position: relative; }
+.spec-list > li::before {
   content: "";
   position: absolute;
   left: -20px;
@@ -382,6 +382,89 @@ main {
   display: block;
   font-size: 13.5px;
   color: var(--text-muted);
+}
+.spec-item-title .spec-dept {
+  font-weight: 500;
+  color: var(--text);
+  margin-left: 8px;
+}
+.spec-tenure {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--signal);
+}
+.spec-tenure-sub {
+  display: block;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.spec-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.spec-toggle:hover,
+.spec-toggle[aria-expanded="true"] { color: var(--signal); border-color: var(--signal-dim); }
+.spec-toggle-chev {
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.spec-toggle[aria-expanded="true"] .spec-toggle-chev { transform: translateY(1px) rotate(-135deg); }
+
+/* collapsible detail: animate grid row 0fr → 1fr so no height measuring is needed */
+.spec-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.3s ease, visibility 0s linear 0.3s;
+}
+.spec-detail.open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows 0.3s ease, visibility 0s;
+}
+.spec-detail-clip { overflow: hidden; min-height: 0; }
+.spec-detail-body {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.rich > * + * { margin-top: 10px; }
+.rich p { margin: 0; }
+.rich strong { font-weight: 700; color: #fff; }
+.rich .rich-h1 { font-size: 17px; font-weight: 600; margin: 0; }
+.rich .rich-h2 { font-size: 14.5px; font-weight: 600; color: var(--signal); margin: 0; }
+.rich ul { margin: 0; padding-left: 18px; list-style: disc; }
+.rich li::marker { color: var(--signal); }
+.rich li + li { margin-top: 4px; }
+@media (max-width: 560px) {
+  .spec-row { flex-wrap: wrap; }
 }
 @media (max-width: 560px) {
   .spec-sheet { grid-template-columns: 92px 1fr; }

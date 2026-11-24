@@ -156,7 +156,7 @@
 
   /* ---------------- about: education / career rows ---------------- */
 
-  // [key, label, placeholder, wide?]
+  // [key, label, placeholder, wide?, kind?]   kind: "full" = whole row, "rich" = whole row + formatting textarea
   var EDUCATION_FIELDS = [
     ["type", "구분", "대학교(학사)"],
     ["start", "입학년월", "2016.03"],
@@ -171,8 +171,71 @@
     ["end", "퇴사", "재직 중"],
     ["position", "직위", "선임"],
     ["company", "회사명", "", true],
-    ["role", "직무", "인프라보안 운영 (보안, 네트워크, 서버, Cloud)", true]
+    ["dept", "부서", "서비스보안운영팀"],
+    ["role", "직무 (한 줄 요약)", "인프라보안 운영 (보안, 네트워크, 서버, Cloud)", false, "full"],
+    ["detail", "세부 경력 (사이트에서 '세부 경력' 접기/열기로 표시)", "담당 업무, 성과 등을 경력기술서처럼 자세히 적어주세요.", false, "rich"]
   ];
+
+  // wrap the selection / prefix the selected lines so the markup stays plain text in content.json
+  function applyRichFormat(ta, kind) {
+    var v = ta.value, s = ta.selectionStart, e = ta.selectionEnd;
+    if (kind === "bold") {
+      var sel = v.slice(s, e);
+      var wrapped = /^\*\*[\s\S]*\*\*$/.test(sel) && sel.length >= 4 ? sel.slice(2, -2) : "**" + (sel || "굵게") + "**";
+      ta.value = v.slice(0, s) + wrapped + v.slice(e);
+      ta.setSelectionRange(s, s + wrapped.length);
+    } else {
+      var prefix = { h1: "# ", h2: "## ", ul: "- " }[kind];
+      var from = v.lastIndexOf("\n", s - 1) + 1;
+      var to = v.indexOf("\n", e);
+      if (to < 0) to = v.length;
+      var lines = v.slice(from, to).split("\n");
+      var allHave = lines.every(function (l) { return l.indexOf(prefix) === 0; });
+      var out = lines.map(function (l) {
+        var bare = l.replace(/^(#{1,2}\s+|[-*]\s+)/, "");
+        return allHave ? bare : prefix + bare;
+      }).join("\n");
+      ta.value = v.slice(0, from) + out + v.slice(to);
+      ta.setSelectionRange(from, from + out.length);
+    }
+    ta.focus();
+    ta.dispatchEvent(new Event("input"));
+  }
+
+  function buildRichField(row, f) {
+    var wrap = document.createElement("div");
+    wrap.className = "span-full rich-field";
+    var cap = document.createElement("span");
+    cap.className = "rich-caption";
+    cap.textContent = f[1];
+    wrap.appendChild(cap);
+
+    var bar = document.createElement("div");
+    bar.className = "rich-toolbar";
+    var ta = document.createElement("textarea");
+    ta.rows = 7;
+    ta.placeholder = f[2];
+    ta.value = row[f[0]] || "";
+    ta.addEventListener("input", function () { row[f[0]] = ta.value; });
+    [["B", "bold", "굵게"], ["제목", "h1", "큰 글씨 제목"], ["소제목", "h2", "작은 제목"], ["• 목록", "ul", "글머리 목록"]].forEach(function (b) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn btn-sm btn-ghost";
+      btn.textContent = b[0];
+      btn.title = b[2];
+      if (b[1] === "bold") btn.style.fontWeight = "700";
+      btn.addEventListener("click", function () { applyRichFormat(ta, b[1]); });
+      bar.appendChild(btn);
+    });
+    wrap.appendChild(bar);
+    wrap.appendChild(ta);
+
+    var hint = document.createElement("p");
+    hint.className = "admin-hint";
+    hint.textContent = "서식: **굵게** · 줄 맨 앞 '# ' 큰 제목 · '## ' 소제목 · '- ' 목록 · 빈 줄은 문단 구분. 버튼으로 선택한 글/줄에 적용할 수 있습니다.";
+    wrap.appendChild(hint);
+    return wrap;
+  }
 
   function renderRowEditor(rootId, list, fields) {
     var root = document.getElementById(rootId);
@@ -183,8 +246,13 @@
       var grid = document.createElement("div");
       grid.className = "admin-grid";
       fields.forEach(function (f) {
+        if (f[4] === "rich") {
+          grid.appendChild(buildRichField(row, f));
+          return;
+        }
         var label = document.createElement("label");
-        if (f[3]) label.className = "span-wide";
+        if (f[4] === "full") label.className = "span-full";
+        else if (f[3]) label.className = "span-wide";
         label.textContent = f[1] + " ";
         var input = document.createElement("input");
         input.type = "text";

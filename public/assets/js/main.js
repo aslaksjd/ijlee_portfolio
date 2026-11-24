@@ -71,11 +71,114 @@
       return {
         period: joinText([r.start, r.end], " — "),
         title: r.company,
+        dept: r.dept,
         sub: r.position,
-        meta: r.role
+        meta: r.role,
+        detail: r.detail
       };
     }]
   ];
+
+  // "2023.08.08" / "2023.08" / "2023-08-08" → Date; a month-only end date means the last day of that month
+  function parseYMD(s, isEnd) {
+    var m = /^(\d{4})[.\-\/](\d{1,2})(?:[.\-\/](\d{1,2}))?/.exec(hasText(s) ? s.trim() : "");
+    if (!m) return null;
+    var day = m[3] ? +m[3] : (isEnd ? new Date(+m[1], +m[2], 0).getDate() : 1);
+    return new Date(+m[1], +m[2] - 1, day);
+  }
+
+  // whole months + leftover days from a (inclusive) to b (exclusive)
+  function monthsAndDays(a, b) {
+    var months = (b.getFullYear() - a.getFullYear()) * 12 + b.getMonth() - a.getMonth();
+    var days = b.getDate() - a.getDate();
+    if (days < 0) {
+      months -= 1;
+      days += new Date(b.getFullYear(), b.getMonth(), 0).getDate();
+    }
+    return { months: months, days: days };
+  }
+
+  // total career length across rows; overlapping periods are counted once, an unparseable end means "still working"
+  function careerTenure(rows, now) {
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var spans = [];
+    rows.forEach(function (r) {
+      var s = parseYMD(r.start, false);
+      if (!s) return;
+      var e = parseYMD(r.end, true) || today;
+      e = new Date(e.getFullYear(), e.getMonth(), e.getDate() + 1);
+      if (e > s) spans.push([s, e]);
+    });
+    spans.sort(function (a, b) { return a[0] - b[0]; });
+    var merged = [];
+    spans.forEach(function (sp) {
+      var last = merged[merged.length - 1];
+      if (last && sp[0] <= last[1]) { if (sp[1] > last[1]) last[1] = sp[1]; }
+      else merged.push([sp[0], sp[1]]);
+    });
+    var months = 0, days = 0;
+    merged.forEach(function (sp) {
+      var md = monthsAndDays(sp[0], sp[1]);
+      months += md.months;
+      days += md.days;
+    });
+    months += Math.floor(days / 30);
+    if (!merged.length) return null;
+    return { years: Math.floor(months / 12), months: months % 12 };
+  }
+
+  // tiny, DOM-built markup (no innerHTML): "# 큰 제목", "## 소제목", "- 목록", "**굵게**", blank line = new paragraph
+  function inlineRich(parent, str) {
+    str.split(/\*\*(.+?)\*\*/).forEach(function (part, i) {
+      if (!part) return;
+      parent.appendChild(i % 2 ? text("strong", null, part) : document.createTextNode(part));
+    });
+  }
+
+  function renderRich(str) {
+    var root = el("div", { class: "rich" });
+    var ul = null, para = null;
+    String(str).split(/\r?\n/).forEach(function (raw) {
+      var line = raw.replace(/\s+$/, "");
+      var m;
+      if (!line.trim()) { ul = null; para = null; return; }
+      if ((m = /^##\s+(.*)$/.exec(line))) {
+        ul = para = null;
+        var h2 = el("h5", { class: "rich-h2" }); inlineRich(h2, m[1]); root.appendChild(h2);
+      } else if ((m = /^#\s+(.*)$/.exec(line))) {
+        ul = para = null;
+        var h1 = el("h5", { class: "rich-h1" }); inlineRich(h1, m[1]); root.appendChild(h1);
+      } else if ((m = /^[-*]\s+(.*)$/.exec(line))) {
+        para = null;
+        if (!ul) { ul = el("ul"); root.appendChild(ul); }
+        var li = el("li"); inlineRich(li, m[1]); ul.appendChild(li);
+      } else {
+        ul = null;
+        if (!para) { para = el("p"); root.appendChild(para); }
+        else para.appendChild(el("br"));
+        inlineRich(para, line);
+      }
+    });
+    return root;
+  }
+
+  var detailSeq = 0;
+  function buildDetailToggle(detail) {
+    var id = "career-detail-" + (++detailSeq);
+    var btn = el("button", { class: "spec-toggle", type: "button", "aria-expanded": "false", "aria-controls": id });
+    btn.appendChild(text("span", null, "세부 경력"));
+    btn.appendChild(el("span", { class: "spec-toggle-chev", "aria-hidden": "true" }));
+    var panel = el("div", { class: "spec-detail", id: id }, [
+      el("div", { class: "spec-detail-clip" }, [
+        el("div", { class: "spec-detail-body" }, [renderRich(detail)])
+      ])
+    ]);
+    btn.addEventListener("click", function () {
+      var open = panel.classList.toggle("open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    return { btn: btn, panel: panel };
+  }
 
   // oldest first; "2016.03" < "2016.03.05" < "2016.04" compare correctly as plain strings,
   // rows without a start date go last
@@ -121,7 +224,16 @@
     ABOUT_LISTS.forEach(function (l, i) {
       var rows = rowsOf(about[l[0]]);
       if (i > 0) sheet.appendChild(el("div", { class: "spec-divider", "aria-hidden": "true" }));
-      sheet.appendChild(text("dt", null, l[1]));
+      var dt = text("dt", null, l[1]);
+      if (l[0] === "career" && Array.isArray(rows)) {
+        var tenure = careerTenure(rows, new Date());
+        if (tenure) {
+          dt.appendChild(text("span", "spec-tenure", tenure.years + "년차"));
+          dt.appendChild(text("span", "spec-tenure-sub",
+            tenure.years + "년" + (tenure.months ? " " + tenure.months + "개월" : "")));
+        }
+      }
+      sheet.appendChild(dt);
       if (typeof rows === "string") {
         sheet.appendChild(text("dd", null, rows));
         return;
@@ -134,11 +246,17 @@
       rows.forEach(function (r) {
         var v = l[2](r);
         var title = text("span", "spec-item-title", v.title || "");
+        if (hasText(v.dept)) title.appendChild(text("span", "spec-dept", v.dept));
         if (hasText(v.sub)) title.appendChild(text("span", "spec-sub", v.sub));
-        list.appendChild(el("li", null, [
+        var toggle = hasText(v.detail) ? buildDetailToggle(v.detail) : null;
+        var main = el("div", { class: "spec-main" }, [
           hasText(v.period) ? text("span", "spec-period", v.period) : null,
           title,
           hasText(v.meta) ? text("span", "spec-meta", v.meta) : null
+        ]);
+        list.appendChild(el("li", null, [
+          el("div", { class: "spec-row" }, [main, toggle && toggle.btn]),
+          toggle && toggle.panel
         ]));
       });
       sheet.appendChild(el("dd", null, [list]));
