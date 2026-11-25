@@ -116,33 +116,33 @@
         {
           "images": [
             "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwvzvi1m-0.png",
-            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwwposgf-0.png",
-            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwwposgf-1.png"
+            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwwtwfl7-1.png",
+            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwwtwfl7-0.png"
           ],
           "title": "리뉴얼 된 롯데미래전략연구소 홈페이지"
         }
       ]
     },
     {
+      "tags": [],
       "date": "2022.03 - 2022.07",
       "title": "전 고객사 EoS 어플라이언스 교체",
       "org": "파이오링크 / 보안사업본부",
       "summary": "# **목적 및 배경**\n  • 약 200개 고객사의 어플라이언스 EoS에 따른 일괄 교체\n\n\n# **역할**\n  [아키텍처 검토 및 적용] 게임·교육·여행 등 기업별 아키텍처를 분석하고 교체 설계·수행\n\n\n# **어려움 및 극복**\n    • 휴먼 리소스 부족\n      → 3인 팀의 막내로 참여, 착수 전 상사 일괄 퇴직으로 프로젝트 중단 위기\n\n\n      → 단독 수행하며 데이터 이관 작업의 규칙성을 발견, 자동화 가능성 판단\n\n\n      → 학생 시절 학습한 C 언어 경험을 바탕으로 Shell Script 마이그레이션 툴 직접 구현\n\n\n      → 작업 시간 대폭 단축 및 human error 최소화로 프로젝트 완수\n\n\n# **회사기여**\n##   ▶고객사 정보 이관 2day → 3h 수준으로 단축 및 프로젝트 성료\n\n# **성과 및 공로**\n##   ▶재직 기간 중 가장 힘들었지만, 가장 큰 성장의 경험 \n##   ▶공로를 인정 받아 특별 진급 대상자 선정\n",
-      "tags": [],
       "sections": [
         {
-          "title": "5년 전 수기로 작성했던 script 및 테스트 결과",
           "images": [
             "assets/img/changelog/전-고객사-eos-어플라이언스-교체/5년-전-수기로-작성했던-script-및-테스트-결과/mwwtm1jy-0.png",
             "assets/img/changelog/전-고객사-eos-어플라이언스-교체/5년-전-수기로-작성했던-script-및-테스트-결과/mwwtm1jy-1.png",
             "assets/img/changelog/전-고객사-eos-어플라이언스-교체/5년-전-수기로-작성했던-script-및-테스트-결과/mwwtm1jy-2.png"
-          ]
+          ],
+          "title": "5년 전 수기로 작성했던 script 및 테스트 결과"
         },
         {
-          "title": "특별 진급 대상자 선정 이력",
           "images": [
             "assets/img/changelog/전-고객사-eos-어플라이언스-교체/특별-진급-대상자-선정-이력/mwwtm1jy-0.png"
-          ]
+          ],
+          "title": "특별 진급 대상자 선정 이력"
         }
       ]
     }
@@ -208,80 +208,80 @@
       ]
     },
     {
+      "tags": [],
       "title": "CSPM (클라우드 보안 관리 시스템)",
       "summary": "AWS 서비스 보안 운영 중 발생하는 업무의 과도한 소요 시간 단축",
       "description": "# **배경 및 문제점**\n  [무수히 많은 account]   약 80개 이상의 AWS account 조회로 인하여 1건의 security                  \n                              group 적용 업무에도 평균 1-3시간 소요\n\n\n  [로그 미증적]   비용 문제로 인한 Cloudwatch 로그 증적 미사용, 통신 불가능 발생 \n                     시 어느 구간에서 문제가 되는지 식별 불가능\n\n\n# **목표**\n  ACL 적용 간소화 :-단순 ACL 적용도 1-2시간 소요되는 환경의 문제점 개선\n  AWS 서비스 구성도 : 80개의 account마다 서로 다른 아키텍처로 구성 식별의 어려움 개선\n\n\n# **구현 방안**\n  ●API 연결 : claude-code와 amazon-cli를 연결하여 웹 기반으로 구현\n  ●기반 데이터 : 사내 AWS account / vpc 정보를 저장하는 데이터 소스 연동\n  ●자체 데이터 : 기반 데이터에 포함되지 않는 security group, eni 정보 등을\n               주기적으로 수집 및 최신화하여 별도의 공간 저장/연동\n\n\n# **성과**\n##   ▶Account 탐색 시간 단축\n   → 업무 진행 간 어떤 resource가 어떤 account에 있는지 식별이 가능해짐으로써\n     AWS 관련 업무 소요 시간 최대 80% 단축\n\n\n##   ▶resource 식별 체계 확립\n   → resource를 식별할 수 없어 발생했던 문제(문제 발생 시 어떤 account를 확인해야 \n     하는지 / 특정 resource가 어떤 account에 존재하는지)의 개선\n\n\n##   ▶구성도 도출 기능 구현\n   → 80개 이상의 account / 3만대↑  instance 무수히 많은 라우팅으로 인해 구성도 \n     작성의 어려움을 개선하여 각 account/region을 지정하여 구성도 도출\n\n\n# **향후 개선 방향**\n##    ❗반복 업무 자동화\n     → 80% 이상의 반복 업무 소요 시간이 단축됐지만 여전히 운영자의 판단이 중요,\n     우후죽순 생겨나는 AWS Account의 새로운 환경은 베이스 데이터가 쌓이기 \n     전까지 동일한 상황을 Agent - AWS MCP 연결로 자동화 목표\n\n\n##    ❗로그 식별\n     → 로그를 남기지 않아 통신 이력 확인의 어려움이 있음 비용의 문제를 최소화 할 수 있는\n     방안을 도출하여 AWS 서비스용 로그 증적 시스템 구축 목표",
       "modules": [],
-      "tags": [],
       "sections": [
         {
-          "title": "대시보드",
           "images": [
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/대시보드/mwwrx4xy-0.png"
-          ]
+          ],
+          "title": "대시보드"
         },
         {
-          "title": "resource 식별 및 endpoint 추적",
           "images": [
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/resource-식별-및-endpoint-추적/mwwrx4xz-0.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/resource-식별-및-endpoint-추적/mwwrx4xz-1.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/resource-식별-및-endpoint-추적/mwwrx4xz-2.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/resource-식별-및-endpoint-추적/mwwrx4xz-3.png"
-          ]
+          ],
+          "title": "resource 식별 및 endpoint 추적"
         },
         {
-          "title": "자산 식별 및 중앙화",
           "images": [
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/자산-식별-및-중앙화/mwwrx4y0-0.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/자산-식별-및-중앙화/mwwrx4y0-1.png"
-          ]
+          ],
+          "title": "자산 식별 및 중앙화"
         },
         {
-          "title": "보안 위협 식별 및 관리",
           "images": [
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrzcm9-0.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrzcm9-1.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrzcm9-2.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrzcm9-3.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrzcm9-4.png"
-          ]
+          ],
+          "title": "보안 위협 식별 및 관리"
         },
         {
-          "title": "구성도 제작",
           "images": [
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/구성도-제작/mwwrzcm9-0.png"
-          ]
+          ],
+          "title": "구성도 제작"
         },
         {
-          "title": "감사 로그",
           "images": [
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/감사-로그/mwwrzcm9-0.png",
             "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/감사-로그/mwwrzcm9-1.png"
-          ]
+          ],
+          "title": "감사 로그"
         }
       ]
     },
     {
+      "tags": [],
       "title": "AWS 서비스 DDoS 방어 체계 구현",
       "summary": "AWS Shield Advanced 자동화 / 현황 대시보드 구현",
       "description": "# **배경 및 문제점**\n  [무수히 많은 account]   약 80개 이상의 AWS account 조회로 인하여 1건의 security                  \n                              group 적용 업무에도 평균 1-3시간 소요\n\n\n  [로그 미증적]   비용 문제로 인한 Cloudwatch 로그 증적 미사용, 통신 불가능 발생 \n                     시 어느 구간에서 문제가 되는지 식별 불가능\n\n\n# **목표**\n  ACL 적용 간소화 : 단순 ACL 적용도 1-2시간 소요되는 환경의 문제점 개선\n  AWS 서비스 구성도 : 80개의 account마다 서로 다른 아키텍처로 구성 식별의 어려움 개선\n\n\n# **구현 방안**\n  ●임계치 alert 발생 : Grafana를 통해 Traffic / Web 공격 식별 및 임계치 \n                            도달 시 firing 발생\n  ●API 포워딩 : 전달된 firing을 분석하고 ec2-role 베이스 AWS API 호출을 통해\n                     어떤 자산인지 판별 및 shield API 호출\n  ●메신저 연동 : 등록 현황 / 임계치 발생 및 shield 등록 발생 시 사내\n                     메신저를 통한 alert 발생\n\n\n# **성과**\n##   ▶Shield 운영 비용 85% 저하\n   → 상시 적용 시 $70k/Month 발생 / 자동화 구현을 통해 $10k/Month 절감\n\n\n##   ▶대시보드 구현을 통한 상시 현황 식별\n   → resource가 어떤 region/account에 적용됐는지 / 누락은 없는지 확인 불가능\n      대시보드 및 현황판 구현을 통해 누락된 자산•실시간 현황 식별\n\n\n# **향후 개선 방향**\n##    ❗기능 고도화\n     → 현재 단순 현황만 식별 가능하여 기능의 미비 존재 Game 서비스 별 \n      traffic / web 공격 판단 식별 정보 등을 삽입 및 고도화 목표",
       "modules": [],
-      "tags": [],
       "sections": [
         {
-          "title": "대시보드 및 Shield 운영 현황",
           "images": [
             "assets/img/aiskill/aws-서비스-ddos-방어-체계-구현/대시보드-및-shield-운영-현황/mwwsnezn-2.png",
             "assets/img/aiskill/aws-서비스-ddos-방어-체계-구현/대시보드-및-shield-운영-현황/mwwsnezn-1.png",
             "assets/img/aiskill/aws-서비스-ddos-방어-체계-구현/대시보드-및-shield-운영-현황/mwwsnezm-0.png",
             "assets/img/aiskill/aws-서비스-ddos-방어-체계-구현/대시보드-및-shield-운영-현황/mwwsnezn-3.png"
-          ]
+          ],
+          "title": "대시보드 및 Shield 운영 현황"
         },
         {
-          "title": "메신저 연동을 통한 현황 파악",
           "images": [
             "assets/img/aiskill/aws-서비스-ddos-방어-체계-구현/메신저-연동을-통한-현황-파악/mwwsnezn-0.png"
-          ]
+          ],
+          "title": "메신저 연동을 통한 현황 파악"
         }
       ]
     }
