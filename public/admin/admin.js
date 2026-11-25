@@ -232,7 +232,7 @@
 
     var hint = document.createElement("p");
     hint.className = "admin-hint";
-    hint.textContent = "서식: **굵게** · 줄 맨 앞 '# ' 큰 제목 · '## ' 소제목 · '- ' 목록 · 빈 줄은 문단 구분. 버튼으로 선택한 글/줄에 적용할 수 있습니다.";
+    hint.textContent = "서식: **굵게** · 줄 맨 앞 '# ' 큰 제목 · '## ' 소제목 · '- ' 목록. 띄어쓰기·들여쓰기는 입력한 그대로, 빈 줄은 입력한 개수만큼 간격이 생깁니다. 버튼으로 선택한 글/줄에 적용할 수 있습니다.";
     wrap.appendChild(hint);
     return wrap;
   }

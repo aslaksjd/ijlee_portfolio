@@ -456,6 +456,9 @@ main {
   line-height: 1.75;
 }
 .rich > * + * { margin-top: 10px; }
+/* keep the author's spaces and indentation instead of collapsing them to one */
+.rich p, .rich li { white-space: pre-wrap; tab-size: 4; }
+.rich > .rich-gap { margin-top: 0; height: 1.4em; }
 .rich p { margin: 0; }
 .rich strong { font-weight: 700; color: #fff; }
 .rich .rich-h1 { font-size: 17px; font-weight: 600; margin: 0; }

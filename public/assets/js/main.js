@@ -137,18 +137,23 @@
 
   function renderRich(str) {
     var root = el("div", { class: "rich" });
-    var ul = null, para = null;
+    var ul = null, para = null, blanks = 0;
     String(str).split(/\r?\n/).forEach(function (raw) {
       var line = raw.replace(/\s+$/, "");
       var m;
-      if (!line.trim()) { ul = null; para = null; return; }
+      if (!line.trim()) { ul = null; para = null; blanks += 1; return; }
+      // the first blank line is the normal paragraph gap; each extra one adds a spacer (not before the first block)
+      for (var g = 1; g < blanks && root.firstChild; g++) {
+        root.appendChild(el("div", { class: "rich-gap", "aria-hidden": "true" }));
+      }
+      blanks = 0;
       if ((m = /^##\s+(.*)$/.exec(line))) {
         ul = para = null;
         var h2 = el("h5", { class: "rich-h2" }); inlineRich(h2, m[1]); root.appendChild(h2);
       } else if ((m = /^#\s+(.*)$/.exec(line))) {
         ul = para = null;
         var h1 = el("h5", { class: "rich-h1" }); inlineRich(h1, m[1]); root.appendChild(h1);
-      } else if ((m = /^[-*]\s+(.*)$/.exec(line))) {
+      } else if ((m = /^\s*[-*]\s+(.*)$/.exec(line))) {
         para = null;
         if (!ul) { ul = el("ul"); root.appendChild(ul); }
         var li = el("li"); inlineRich(li, m[1]); ul.appendChild(li);
