@@ -129,7 +129,7 @@
       "tags": [],
       "title": "FPMS (방화벽 정책 관리 시스템)",
       "summary": "FW 운영 중 발생하는 정책 생성 / 제거 / 최적화, ISMS-P 심사 대응 업무 처리 시간 단축",
-      "description": "# **배경**\n  [업무 처리 지연]  FW 운영 업무 처리 간 과도한 정책 검토 및 추가 요청\n  [검토의 한계]  무수히 많은 서버 개 수(Cloud / On-Prem 도합 2만대+)\n  [잦은 환경 변화]  부서 및 담당자 변경 및 history 누락으로 인한 최적화 진행의 한계\n\n\n# **목표**\n  단순 반복 업무 최소화 : 비주류 업무 최소화 / 중요 업무 리소스 집중\n  장애 방지 : 반복 업무 사이에서 발생하는 human error 제거\n\n\n# **구현 방안**\n  ●API 연결 : FortiOS RestAPI 연결 및 Claude code로 웹 기반으로 구현\n  ●기반 데이터 : Graylog / Netbox 근거로 사용될 기반 데이터 연결\n\n\n# **성과**\n##   ▶단순 반복 업무 소요 시간 50% 수준 축소\n   → 정책 등록 / 정책에 의한 허용•거부 확인 요청 등 단순 반복되는 업무 주 평균 5-60건 중 \n    40건 이상 자동화 처리\n##   ▶정책 / 객체 40% 수준 최적화\n   → 정책 1만개 / 객체 2.3만개를 6개월 traffic log / 현재 사용 여부를 분석하여\n    정책 6천개 / 객체 1.6만개 수준으로 하향\n\n\n# **향후 개선 방향**\n##    ❗실시간 데이터 연동\n     → 실시간으로 데이터가 아닌 Netbox 정보로 판단 하기에 최신 정보 미반영\n     주기적으로 네트워크 정보가 수집되는 자체 데이터 소스 연동으로 실시간 정확성 상승 목표\n\n##    ❗AI Agent 도입\n     → 반복 업무에 소요되는 시간을 크게 단축됐으나, 역량 / 경험 / 이력에 따른\n     운영자 판단 차이가 존재, Agent를 도입, 판단/적용까지 완전 자동화를 목표\n ",
+      "description": "# **배경 및 문제점**\n  [업무 처리 지연]  FW 운영 업무 처리 간 과도한 정책 검토 및 추가 요청\n\n\n  [검토의 한계]  무수히 많은 서버 개 수(Cloud / On-Prem 도합 2만대+)\n\n\n  [잦은 환경 변화]  부서 및 담당자 변경 및 history 누락으로 인한 최적화 진행의 한계\n\n\n# **목표**\n  단순 반복 업무 최소화 : 비주류 업무 최소화 / 중요 업무 리소스 집중\n  장애 방지 : 반복 업무 사이에서 발생하는 human error 제거\n\n\n# **구현 방안**\n  ●API 연결 : FortiOS RestAPI 연결 및 Claude code로 웹 기반으로 구현\n  ●기반 데이터 : Graylog / Netbox 근거로 사용될 기반 데이터 연결\n\n\n# **성과**\n##   ▶단순 반복 업무 소요 시간 50% 수준 축소\n   → 정책 등록 / 정책에 의한 허용•거부 확인 요청 등 단순 반복되는 업무 주 평균 5-60건 중 \n    40건 이상 자동화 처리\n##   ▶정책 / 객체 40% 수준 최적화\n   → 정책 1만개 / 객체 2.3만개를 6개월 traffic log / 현재 사용 여부를 분석하여\n    정책 6천개 / 객체 1.6만개 수준으로 하향\n\n\n# **향후 개선 방향**\n##    ❗실시간 데이터 연동\n     → 실시간으로 데이터가 아닌 Netbox 정보로 판단 하기에 최신 정보 미반영\n     주기적으로 네트워크 정보가 수집되는 자체 데이터 소스 연동으로 실시간 정확성 상승 목표\n\n##    ❗AI Agent 도입\n     → 반복 업무에 소요되는 시간을 크게 단축됐으나, 역량 / 경험 / 이력에 따른\n     운영자 판단 차이가 존재, Agent를 도입, 판단/적용까지 완전 자동화를 목표\n ",
       "modules": [],
       "sections": [
         {
@@ -181,6 +181,60 @@
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/신청-이력-관리-조치-및-감사-기록-증적/mwvzcmaf-6.png"
           ],
           "title": "신청 이력 관리 / 조치 및 감사 기록 증적"
+        }
+      ]
+    },
+    {
+      "title": "CSPM (클라우드 보안 관리 시스템)",
+      "summary": "AWS 서비스 보안 운영 중 발생하는 업무의 과도한 소요 시간 단축",
+      "description": "# **배경 및 문제점**\n  [무수히 많은 account]   약 80개 이상의 AWS account 조회로 인하여 1건의 security group\n                        적용 업무에도 평균 1-3시간 소요\n\n\n  [로그 미증적]   비용 문제로 인한 Cloudwatch 로그 증적 미사용, 통신 불가능 발생 시 어느\n                구간에서 문제가 되는지 식별 불가능\n\n\n# **목표**\n  ACL 적용 간소화 :-단순 ACL 적용도 1-2시간 소요되는 환경의 문제점 개선\n  AWS 서비스 구성도 : 80개의 account마다 서로 다른 아키텍처로 구성 식별의 어려움 개선\n\n\n# **구현 방안**\n  ●API 연결 : claude-code와 amazon-cli를 연결하여 웹 기반으로 구현\n  ●기반 데이터 : 사내 AWS account / vpc 정보를 저장하는 데이터 소스 연동\n  ●자체 데이터 : 기반 데이터에 포함되지 않는 security group, eni 정보 등을\n               주기적으로 수집 및 최신화하여 별도의 공간 저장/연동\n\n\n# **성과**\n##   ▶Account 탐색 시간 단축\n   → 업무 진행 간 어떤 resource가 어떤 account에 있는지 식별이 가능해짐으로써\n     AWS 관련 업무 소요 시간 최대 80% 단축\n\n\n##   ▶resource 식별 체계 확립\n   → resource를 식별할 수 없어 발생했던 문제(문제 발생 시 어떤 account를 확인해야 하는지 /\n     특정 resource가 어떤 account에 존재하는지)의 개선\n\n\n##   ▶구성도 도출 기능 구현\n   → 80개 이상의 account / 3만 대 이상의 instance 무수히 많은 라우팅으로 인해 구성도 작성\n     의 어려움을 개선하여 각 account/region을 지정하여 구성도 도출\n\n\n# **향후 개선 방향**\n##    ❗반복 업무 자동화\n     → 80% 이상의 반복 업무 소요 시간이 단축됐지만 여전히 운영자의 판단이 중요,\n     우후죽순 생겨나는 AWS Account의 새로운 환경은 베이스 데이터가 쌓이기 전까지 동일한 상황\n     을 Agent - AWS MCP 연결로 자동화 목표\n\n\n##    ❗로그 식별\n     → 로그를 남기지 않아 통신 이력 확인의 어려움이 있음 비용의 문제를 최소화 할 수 있는\n     방안을 도출하여 AWS 서비스용 로그 증적 시스템 구축 목표",
+      "modules": [],
+      "tags": [],
+      "sections": [
+        {
+          "title": "대시보드",
+          "images": [
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/대시보드/mwwrld1c-0.png"
+          ]
+        },
+        {
+          "title": "리소스 식별 / endpoint 추적",
+          "images": [
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/리소스-식별-endpoint-추적/mwwrld1c-0.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/리소스-식별-endpoint-추적/mwwrld1c-1.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/리소스-식별-endpoint-추적/mwwrld1c-2.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/리소스-식별-endpoint-추적/mwwrld1c-3.png"
+          ]
+        },
+        {
+          "title": "자산 식별 및 중앙화",
+          "images": [
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/자산-식별-및-중앙화/mwwrld1c-0.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/자산-식별-및-중앙화/mwwrld1c-1.png"
+          ]
+        },
+        {
+          "title": "보안 위협 식별 및 관리",
+          "images": [
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrld1c-0.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrld1c-1.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrld1c-2.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrld1c-3.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/보안-위협-식별-및-관리/mwwrld1d-4.png"
+          ]
+        },
+        {
+          "title": "구성도 도출",
+          "images": [
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/구성도-도출/mwwrld1d-0.png"
+          ]
+        },
+        {
+          "title": "감사 로그 증적",
+          "images": [
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/감사-로그-증적/mwwrld1d-0.png",
+            "assets/img/aiskill/cspm-클라우드-보안-관리-시스템/감사-로그-증적/mwwrld1d-1.png"
+          ]
         }
       ]
     }
