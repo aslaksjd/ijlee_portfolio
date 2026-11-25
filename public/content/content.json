@@ -80,10 +80,9 @@
       "sections": [
         {
           "images": [
-            "assets/img/changelog/스마일게이트-그룹-agentic-ai-zone-구축/azure-구성도-민감-정보-마스킹/mwvmgg0f-1.png",
             "assets/img/changelog/스마일게이트-그룹-agentic-ai-zone-구축/azure-구성도-민감-정보-마스킹/mwvmgg0f-0.png"
           ],
-          "title": "Azure 구성도 (민감 정보 마스킹)"
+          "title": "Azure 구성도 (구성도는 대외비라 예시로 작성)"
         },
         {
           "images": [],
