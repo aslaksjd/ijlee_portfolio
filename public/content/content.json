@@ -241,12 +241,12 @@
     {
       "title": "AWS 서비스 DDoS 방어 체계 구현",
       "summary": "AWS Shield Advanced 자동화 / 현황 대시보드 구현",
-      "description": "# **배경 및 문제점**\n  [무수히 많은 account]   약 80개 이상의 AWS account 조회로 인하여 1건의 security                  \n                              group 적용 업무에도 평균 1-3시간 소요\n\n\n  [로그 미증적]   비용 문제로 인한 Cloudwatch 로그 증적 미사용, 통신 불가능 발생 \n                     시 어느 구간에서 문제가 되는지 식별 불가능\n\n\n# **목표**\n  ACL 적용 간소화 :-단순 ACL 적용도 1-2시간 소요되는 환경의 문제점 개선\n  AWS 서비스 구성도 : 80개의 account마다 서로 다른 아키텍처로 구성 식별의 어려움 개선\n\n\n# **구현 방안**\n  ●API 연결 : claude-code와 amazon-cli를 연결하여 웹 기반으로 구현\n  ●기반 데이터 : 사내 AWS account / vpc 정보를 저장하는 데이터 소스 연동\n  ●자체 데이터 : 기반 데이터에 포함되지 않는 security group, eni 정보 등을\n               주기적으로 수집 및 최신화하여 별도의 공간 저장/연동\n\n\n# **성과**\n##   ▶Shield 운영 비용 85% 저하\n   → 상시 적용 시 $70k/Month 발생 / 자동화 구현을 통해 $10k/Month 절감",
+      "description": "# **배경 및 문제점**\n  [무수히 많은 account]   약 80개 이상의 AWS account 조회로 인하여 1건의 security                  \n                              group 적용 업무에도 평균 1-3시간 소요\n\n\n  [로그 미증적]   비용 문제로 인한 Cloudwatch 로그 증적 미사용, 통신 불가능 발생 \n                     시 어느 구간에서 문제가 되는지 식별 불가능\n\n\n# **목표**\n  ACL 적용 간소화 : 단순 ACL 적용도 1-2시간 소요되는 환경의 문제점 개선\n  AWS 서비스 구성도 : 80개의 account마다 서로 다른 아키텍처로 구성 식별의 어려움 개선\n\n\n# **구현 방안**\n  ●임계치 alert 발생 : Grafana를 통해 Traffic / Web 공격 식별 및 임계치 \n                      도달 시 firing 발생\n  ●API 포워딩 : 전달된 firing을 분석하고 ec2-role 베이스 AWS API 호출을 통해\n                     어떤 자산인지 판별 및 shield API 호출\n\n\n# **성과**\n##   ▶Shield 운영 비용 85% 저하\n   → 상시 적용 시 $70k/Month 발생 / 자동화 구현을 통해 $10k/Month 절감\n\n\n##   ▶대시보드 구현을 통한 상시 현황 식별\n   → resource가 어떤 region/account에 적용됐는지 / 누락은 없는지 확인 불가능\n      대시보드 및 현황판 구현을 통해 누락된 자산•실시간 현황 식별\n\n\n# **향후 개선 방향**\n##    ❗기능 고도화\n     → 현재 단순 현황만 식별 가능하여 기능의 미비함이 있음\n      Game 서비스 별 traffic / web 공격 판단 식별 정보 등을 \n      삽입 및 고도화 목표",
       "modules": [],
       "tags": [],
       "sections": [
         {
-          "title": "",
+          "title": "대시보드 및 Shield 운영 현황",
           "images": []
         }
       ]
