@@ -85,8 +85,11 @@
           "title": "Azure 구성도 (구성도는 대외비라 예시로 작성)"
         },
         {
-          "images": [],
-          "title": "로그 증적 방식에 따른 구성도 (민감 정보 마스킹)"
+          "images": [
+            "assets/img/changelog/스마일게이트-그룹-agentic-ai-zone-구축/로그-증적-방식에-따른-구성도-민감-정보-제거/mwvmup5a-0.png",
+            "assets/img/changelog/스마일게이트-그룹-agentic-ai-zone-구축/로그-증적-방식에-따른-구성도-민감-정보-제거/mwvmup5a-1.png"
+          ],
+          "title": "로그 증적 방식에 따른 구성도 (민감 정보 제거)"
         }
       ]
     },
