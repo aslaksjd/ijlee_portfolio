@@ -107,19 +107,19 @@
       ]
     },
     {
+      "tags": [],
       "date": "2024.01 - 2024.07",
       "title": "롯데미래전략연구소 홈페이지 리뉴얼",
       "org": "롯데이노베이트/롯데미래전략연구소IS팀",
       "summary": "# **목적 및 배경**\n  • 홈페이지 메인 기능(간행물 발간) 유지보수 종료\n  • 구형 디자인으로 인한 가독성 저하\n\n\n# **역할**\n  [인프라 구축]  Private Cloud 기반 서버 / DB / 미들웨어 구축 및 세팅\n  [물리 보안 구축]  대외비 자산인 간행물 시스템으로 인하여 물리 보안 환경 구축\n  [보안 조치]  구축 시스템에 대한 취약점 조치 및 보안 컨설팅 대응\n\n\n# **수행과제 및 기여**\n##   ▶인프라 구축\n     • 서버(webtob) / WAS(jeus) / DB(tibero) 3티어 인프라 구축\n\n\n     • WAS/DB 구축 단계 PM의 부재로 인하여 프로젝트 원할하지 못하여 Role이 아님에도\n     지원하여 구축 진행\n\n\n##   ▶물리 보안 구축\n     • 연구소 중요 자산인 간행물(연구 결과 자료) 데이터 보호를 위하여\n     개발 환경의 물리 보안 구축 독립된 개발 장소 / 물리 보안 장치 /\n     데이터 반출 제한 커스터마이징 설정\n\n\n# **성과**\n##   ▶ PM의 부재에도 성실한 수행을 통해 성공적인 홈페이지 오픈 및 고도화\n##   ▶ 기존 유지보수사(외부) 계약 해지 및 소속 팀으로 계약 진행 (연 2억 수준)\n##   ▶ 홈페이지 GDWEB Design AWARDS 수상\n\n# **한계**\n  • PM의 부재로 DB/WAS까지 지원하였으나 전문 분야가 아니기에 설정의 미비함 존재",
-      "tags": [],
       "sections": [
         {
-          "title": "리뉴얼 된 롯데미래전략연구소 홈페이지",
           "images": [
-            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwvzvi1n-2.png",
-            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwvzvi1n-1.png",
-            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwvzvi1m-0.png"
-          ]
+            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwvzvi1m-0.png",
+            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwwposgf-0.png",
+            "assets/img/changelog/롯데미래전략연구소-홈페이지-리뉴얼/리뉴얼-된-롯데미래전략연구소-홈페이지/mwwposgf-1.png"
+          ],
+          "title": "리뉴얼 된 롯데미래전략연구소 홈페이지"
         }
       ]
     }
@@ -157,7 +157,6 @@
           "title": "정책  및 객체 생성 기능"
         },
         {
-          "title": "보안 점검 및 정책 최적화",
           "images": [
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/보안-점검-및-정책-최적화/mwvzcmaf-0.png",
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/보안-점검-및-정책-최적화/mwvzcmaf-1.png",
@@ -165,10 +164,10 @@
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/보안-점검-및-정책-최적화/mwvzcmaf-4.png",
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/보안-점검-및-정책-최적화/mwvzcmaf-3.png",
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/보안-점검-및-정책-최적화/mwvzcmaf-5.png"
-          ]
+          ],
+          "title": "보안 점검 및 정책 최적화"
         },
         {
-          "title": "신청 이력 관리 / 조치 및 감사 기록 증적",
           "images": [
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/신청-이력-관리-조치-및-감사-기록-증적/mwvzcmaf-0.png",
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/신청-이력-관리-조치-및-감사-기록-증적/mwvzcmaf-1.png",
@@ -180,7 +179,8 @@
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/신청-이력-관리-조치-및-감사-기록-증적/mwvzcmaf-7.png",
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/신청-이력-관리-조치-및-감사-기록-증적/mwvzcmag-9.png",
             "assets/img/aiskill/fpms-방화벽-정책-관리-시스템/신청-이력-관리-조치-및-감사-기록-증적/mwvzcmaf-6.png"
-          ]
+          ],
+          "title": "신청 이력 관리 / 조치 및 감사 기록 증적"
         }
       ]
     }
