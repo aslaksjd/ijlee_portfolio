@@ -237,6 +237,19 @@
           ]
         }
       ]
+    },
+    {
+      "title": "AWS DoS 방어 자동화",
+      "summary": "AWS Shield Advanced 자동화 및 현황 대시보드 구현",
+      "description": "",
+      "modules": [],
+      "tags": [],
+      "sections": [
+        {
+          "title": "",
+          "images": []
+        }
+      ]
     }
   ]
 }
