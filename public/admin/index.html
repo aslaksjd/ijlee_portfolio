@@ -19,9 +19,16 @@
   <a class="admin-back" href="../">사이트로 돌아가기</a>
 </header>
 
+<nav class="admin-tabs" role="tablist" aria-label="편집 메뉴">
+  <button type="button" role="tab" data-tab="settings">GitHub 설정</button>
+  <button type="button" role="tab" data-tab="about">About Me</button>
+  <button type="button" role="tab" data-tab="project">Project</button>
+  <button type="button" role="tab" data-tab="ai">AI Utilization</button>
+</nav>
+
 <main class="admin-main">
 
-  <section class="admin-card" id="settings-card">
+  <section class="admin-card" id="settings-card" data-pane="settings">
     <h2>GitHub 연결 설정</h2>
     <p class="admin-hint">
       이 설정은 이 브라우저에만 저장됩니다(서버로 전송되지 않음). Personal Access Token은
@@ -47,7 +54,7 @@
     <p id="settings-status" class="admin-status"></p>
   </section>
 
-  <section class="admin-card">
+  <section class="admin-card" data-pane="about">
     <h2>About</h2>
     <div class="admin-grid" id="about-form">
       <label>이름 <input data-field="name" type="text"></label>
@@ -73,7 +80,7 @@
     </div>
   </section>
 
-  <section class="admin-card">
+  <section class="admin-card" data-pane="about">
     <h2>Hero (메인 화면 문구)</h2>
     <div class="admin-grid" id="profile-form">
       <label>직함 <input data-field="role" type="text"></label>
@@ -87,7 +94,7 @@
     <p class="admin-hint">업로드하면 <code>assets/img/profile/me.jpg</code> 로 저장됩니다.</p>
   </section>
 
-  <section class="admin-card">
+  <section class="admin-card" data-pane="project">
     <div class="admin-card-head">
       <h2>Changelog (경력)</h2>
       <button id="btn-add-changelog" class="btn" type="button">항목 추가</button>
@@ -95,7 +102,7 @@
     <div id="changelog-editor"></div>
   </section>
 
-  <section class="admin-card">
+  <section class="admin-card" data-pane="ai">
     <div class="admin-card-head">
       <h2>AI Skill</h2>
       <button id="btn-add-skill" class="btn" type="button">항목 추가</button>
@@ -112,5 +119,24 @@
 </main>
 
 <script src="admin.js"></script>
+<script>
+(function () {
+  var tabs = document.querySelectorAll(".admin-tabs [data-tab]");
+  var panes = document.querySelectorAll("[data-pane]");
+  function select(name) {
+    tabs.forEach(function (t) {
+      var on = t.dataset.tab === name;
+      t.classList.toggle("is-active", on);
+      t.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    panes.forEach(function (p) { p.hidden = p.dataset.pane !== name; });
+    try { sessionStorage.setItem("admin-tab", name); } catch (e) {}
+  }
+  tabs.forEach(function (t) { t.addEventListener("click", function () { select(t.dataset.tab); }); });
+  var saved = null;
+  try { saved = sessionStorage.getItem("admin-tab"); } catch (e) {}
+  select(saved && document.querySelector('[data-tab="' + saved + '"]') ? saved : "about");
+})();
+</script>
 </body>
 </html>
