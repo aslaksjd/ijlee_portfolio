@@ -142,8 +142,8 @@
       var line = raw.replace(/\s+$/, "");
       var m;
       if (!line.trim()) { ul = null; para = null; blanks += 1; return; }
-      // the first blank line is the normal paragraph gap; each extra one adds a spacer (not before the first block)
-      for (var g = 1; g < blanks && root.firstChild; g++) {
+      // every blank line the author typed becomes one spacer (not before the first block)
+      for (var g = 0; g < blanks && root.firstChild; g++) {
         root.appendChild(el("div", { class: "rich-gap", "aria-hidden": "true" }));
       }
       blanks = 0;
