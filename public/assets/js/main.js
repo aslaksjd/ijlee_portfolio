@@ -563,19 +563,35 @@
       lightboxImg.src = "";
     }
 
+    var prevBtn = lightbox.querySelector(".lightbox-prev");
+    var nextBtn = lightbox.querySelector(".lightbox-next");
+    var gallery = [], index = 0;
+
+    function show(i) {
+      index = (i + gallery.length) % gallery.length;
+      lightboxImg.src = gallery[index].src;
+      lightboxImg.alt = gallery[index].alt || "";
+    }
+
     document.addEventListener("click", function (e) {
       var img = e.target.closest(".changelog-images img, .skill-images img");
       if (img) {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt || "";
+        gallery = Array.prototype.slice.call(img.closest(".changelog-images, .skill-images").querySelectorAll("img"));
+        prevBtn.hidden = nextBtn.hidden = gallery.length < 2;
+        show(gallery.indexOf(img));
         lightbox.classList.add("is-open");
         lightbox.setAttribute("aria-hidden", "false");
         return;
       }
+      if (e.target.closest(".lightbox-prev")) { show(index - 1); return; }
+      if (e.target.closest(".lightbox-next")) { show(index + 1); return; }
       if (e.target === lightbox || e.target.closest(".lightbox-close")) close();
     });
     document.addEventListener("keydown", function (e) {
+      if (!lightbox.classList.contains("is-open")) return;
       if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft" && gallery.length > 1) show(index - 1);
+      else if (e.key === "ArrowRight" && gallery.length > 1) show(index + 1);
     });
   }
 

@@ -623,6 +623,23 @@ main {
   cursor: pointer;
 }
 .lightbox-close:hover, .lightbox-close:focus-visible { border-color: var(--signal); color: var(--signal); }
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 72px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+.lightbox-nav:hover, .lightbox-nav:focus-visible { border-color: var(--signal); color: var(--signal); }
+.lightbox-nav[hidden] { display: none; }
 
 /* ============================================================
    AI Utilization — flat panels, no shadow, varied internal structure
