@@ -57,7 +57,7 @@
         "company": "파이오링크",
         "role": "Network Security Engineer",
         "dept": "보안사업본부",
-        "detail": "# **담당업무** \n  [서비스 환경 구축 및 운영]   AWS / Tencent / On-Prem\n  [서비스 DDoS 방어]   AWS Shield / Tencent EdgeOne / IDC\n  [보안 아키텍처 설계]   신규 서비스 구성 간 보안 아키텍처 방향 제시 및 검토"
+        "detail": "# **담당업무** \n  [어플라이언스 구축]   UTM / WAF / IPS / DDoS / VPN / L4 / EDR 구축\n  [IDC 운영]   자사 IDC 관리 / 서버 구축•운영\n  [보안 및 네트워크 운영]  시스템 운영 / 아키텍처 제안 / 운영•설정 지원"
       },
       {
         "start": "2025.12.01",
