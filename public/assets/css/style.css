@@ -355,6 +355,9 @@ main {
   border-top: 8px solid var(--signal);
 }
 .spec-list > li { position: relative; }
+/* plain list (자격사항): no time axis, no dots */
+.spec-plain { padding-left: 0; gap: 12px; }
+.spec-plain::before, .spec-plain::after, .spec-plain > li::before { display: none; }
 .spec-list > li::before {
   content: "";
   position: absolute;

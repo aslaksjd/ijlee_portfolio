@@ -6,7 +6,7 @@
 
   var state = {
     profile: { name: "", role: "", headline: "", subhead: "", photo: "assets/img/profile/me.jpg", photoFallback: "assets/img/profile/placeholder.svg" },
-    about: { name: "", birth: "", address: "", email: "", education: [], career: [] },
+    about: { name: "", birth: "", address: "", email: "", certifications: [], education: [], career: [] },
     changelog: [],
     aiSkills: []
   };
@@ -157,6 +157,11 @@
   /* ---------------- about: education / career rows ---------------- */
 
   // [key, label, placeholder, wide?, kind?]   kind: "full" = whole row, "rich" = whole row + formatting textarea
+  var CERT_FIELDS = [
+    ["date", "취득일자", "2023.05.12"],
+    ["name", "자격명", "정보보안기사", true],
+    ["issuer", "주관사", "한국인터넷진흥원"]
+  ];
   var EDUCATION_FIELDS = [
     ["type", "구분", "대학교(학사)"],
     ["start", "입학년월", "2016.03"],
@@ -284,6 +289,7 @@
   }
 
   function renderAboutLists() {
+    renderRowEditor("certification-editor", state.about.certifications, CERT_FIELDS);
     renderRowEditor("education-editor", state.about.education, EDUCATION_FIELDS);
     renderRowEditor("career-editor", state.about.career, CAREER_FIELDS);
   }
@@ -295,6 +301,7 @@
       if (typeof v === "string" && v.trim()) { var r = {}; r[key] = v.trim(); return [r]; }
       return [];
     }
+    a.certifications = Array.isArray(a.certifications) ? a.certifications : [];
     a.education = toRows(a.education, "school");
     a.career = toRows(a.career !== undefined ? a.career : a.company, "company");
     delete a.company;
@@ -751,6 +758,10 @@
       s.token = "";
       saveSettingsToStorage(s);
       setStatus("settings-status", "토큰을 지웠습니다.", "ok");
+    });
+    document.getElementById("btn-add-certification").addEventListener("click", function () {
+      state.about.certifications.push({});
+      renderAboutLists();
     });
     document.getElementById("btn-add-education").addEventListener("click", function () {
       state.about.education.push({});

@@ -58,7 +58,11 @@
   }
 
   // each row → { period, title, sub, meta } for the timeline list
+  // 4th item true = keep the order the author typed (no date sort, no timeline axis)
   var ABOUT_LISTS = [
+    ["certifications", "자격사항", function (r) {
+      return { period: r.date, title: r.name, meta: r.issuer };
+    }, true],
     ["education", "학력", function (r) {
       return {
         period: joinText([r.start, r.end], " — "),
@@ -193,11 +197,11 @@
     return x < y ? -1 : x > y ? 1 : 0;
   }
 
-  function rowsOf(value) {
+  function rowsOf(value, keepOrder) {
     if (Array.isArray(value)) {
-      return value
-        .filter(function (r) { return r && Object.keys(r).some(function (k) { return hasText(r[k]); }); })
-        .sort(byStart);
+      var rows = value
+        .filter(function (r) { return r && Object.keys(r).some(function (k) { return hasText(r[k]); }); });
+      return keepOrder ? rows : rows.sort(byStart);
     }
     return hasText(value) ? value : []; // legacy plain-text value
   }
@@ -208,7 +212,7 @@
     about = about || {};
 
     var any = ABOUT_FIELDS.some(function (f) { return hasText(about[f[0]]); }) ||
-      ABOUT_LISTS.some(function (l) { return rowsOf(about[l[0]]).length > 0; });
+      ABOUT_LISTS.some(function (l) { return rowsOf(about[l[0]], l[3]).length > 0; });
     if (!any) {
       sheet.appendChild(el("div", { class: "changelog-empty", style: "grid-column: 1 / -1;" }, [
         text("span", null, "아직 입력된 소개가 없습니다. 관리자 패널에서 채워 보세요.")
@@ -227,7 +231,7 @@
     });
 
     ABOUT_LISTS.forEach(function (l, i) {
-      var rows = rowsOf(about[l[0]]);
+      var rows = rowsOf(about[l[0]], l[3]);
       if (i > 0) sheet.appendChild(el("div", { class: "spec-divider", "aria-hidden": "true" }));
       var dt = text("dt", null, l[1]);
       if (l[0] === "career" && Array.isArray(rows)) {
@@ -247,7 +251,7 @@
         sheet.appendChild(emptyDd());
         return;
       }
-      var list = el("ol", { class: "spec-list" });
+      var list = el("ol", { class: l[3] ? "spec-list spec-plain" : "spec-list" });
       rows.forEach(function (r) {
         var v = l[2](r);
         var title = text("span", "spec-item-title", v.title || "");
